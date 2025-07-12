@@ -1,0 +1,123 @@
+{
+  "ScenarioName": "NoVEMS_NoInheritance",
+  "SimulationParams": {
+    "Investments": [
+      {
+        "Type": "PreTax",
+        "Amount": 2700000,
+        "GrowthRate": 0.11,
+        "DividendYield": 0.0,
+        "ShortTermGainsPercent": 0.0,
+        "LongTermGainsPercent": 0.0,
+        "RmdAge": 75
+      },
+      {
+        "Type": "Roth",
+        "Amount": 37000,
+        "GrowthRate": 0.1,
+        "DividendYield": 0.0,
+        "ShortTermGainsPercent": 0.0,
+        "LongTermGainsPercent": 0.0
+      },
+      {
+        "Type": "Taxable",
+        "Amount": 2000000,
+        "GrowthRate": 0.12,
+        "DividendYield": 0.0,
+        "ShortTermGainsPercent": 0.0,
+        "CostBasis" :  300000,
+        "LongTermGainsPercent": 0.0005,
+        "TaxPortions": [
+          {
+            "Category": "FederalQualifiedDividend",
+            "Portion": 1.0
+          },
+          {
+            "Category": "StateQualifiedDividend",
+            "Portion": 1.0
+          },
+          {
+            "Category": "ShortTermCapitalGains",
+            "Portion": 1.0
+          }
+        ]
+      },
+      {
+        "Type": "Taxable",
+        "Amount": 729000,
+        "GrowthRate": 0.01,
+        "DividendYield": 0.07,
+        "CostBasis" :  300000,
+        "ShortTermGainsPercent": 0.0,
+        "LongTermGainsPercent": 0.0005,
+        "TaxPortions": [
+          {
+            "Category": "FederalQualifiedDividend",
+            "Portion": 1.0
+          },
+          {
+            "Category": "StateQualifiedDividend",
+            "Portion": 1.0
+          },
+          {
+            "Category": "ShortTermCapitalGains",
+            "Portion": 0.0
+          }
+        ]
+      }
+    ],
+    "TargetAge": 100,
+    "StartAge": 56,
+    "StandardDeduction": 30000,
+    "BizLosses": 0,
+    "CapitalLosses": 0,
+    "BracketInflation": 0.0363,
+    "AnnualBudget": 200000,
+    "ExternalIncomes": [
+      {
+        "Amount": 6000,
+        "StartAge": 55,
+        "OneTime": false,
+        "TaxPortions": [
+          {"Category": "FederalOrdinary", "Portion": 0.1}
+        ]
+      }
+    ],
+    "PreTaxPenaltyRate": 0.05
+  },
+  "TaxSchedules": {
+    "FederalOrdinary": {
+      "Brackets": [
+        {"Lower": 0, "Upper": 23850, "Rate": 0.10},
+        {"Lower": 23850, "Upper": 96950, "Rate": 0.12},
+        {"Lower": 96950, "Upper": 206700, "Rate": 0.22},
+        {"Lower": 206700, "Upper": 394600, "Rate": 0.24},
+        {"Lower": 394600, "Upper": 501050, "Rate": 0.32},
+        {"Lower": 501050, "Upper": 751600, "Rate": 0.35},
+        {"Lower": 751600, "Upper": 1000000000, "Rate": 0.37}
+      ]
+    },
+    "FederalQualifiedDividend": {
+      "Brackets": [
+        {"Lower": 0, "Upper": 96700, "Rate": 0.00},
+        {"Lower": 96700, "Upper": 600050, "Rate": 0.15},
+        {"Lower": 600050, "Upper": 1000000000, "Rate": 0.20}
+      ]
+    },
+    "StateOrdinary": {
+      "Brackets": [
+        {"Lower": 0, "Upper": 1000000000, "Rate": 0.00}
+      ]
+    },
+    "StateQualifiedDividend": {
+      "Brackets": [
+        {"Lower": 0, "Upper": 270000, "Rate": 0.00},
+        {"Lower": 270000, "Upper": 1000000000, "Rate": 0.07}
+      ]
+    },
+    "ShortTermCapitalGains": {
+      "FlatRate": 0.05
+    },
+    "Fica": { "FlatRate": 0.0765 }
+  }
+}
