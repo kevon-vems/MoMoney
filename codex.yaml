@@ -1,0 +1,7 @@
+image:
+  name: mcr.microsoft.com/dotnet/nightly/sdk:9.0
+  dockerfile: Dockerfile
+workdir: /workspace/MoMoney
+steps:
+  - run: dotnet restore MoMoney.sln
+  - run: dotnet build MoMoney.sln --configuration Release --no-restore
