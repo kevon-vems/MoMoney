@@ -1,3 +1,11 @@
+# Root-level instructions for Codex
+
+- All projects must target .NET 9.0 (`net9.0`). Never downgrade frameworks.
+- When introducing new functionality, always add the appropriate NuGet packages to the project file.
+- After any code changes, run:
+    - `dotnet restore <solution>` to ensure packages are installed
+    - `dotnet build <solution> --configuration Release --no-restore`
+
 You should use the Money project as a ROUGH guide for completing this Blazor website.
 Only follow it conceptually.
 The high level concepts we will model first are:
@@ -17,7 +25,6 @@ The high level concepts we will model first are:
 []: # - Startup.cs: The startup configuration for the Blazor Server application.
 []: # - appsettings.json: The configuration file for the Blazor Server application.
 []: # - appsettings.Development.json: The development configuration file for the Blazor Server application.
-[]: # - wwwroot/index.html: The main HTML file for the Blazor Server application.
 []: # - wwwroot/css/app.css: The main CSS file for the Blazor Server application.
 []: # - wwwroot/js/app.js: The main JavaScript file for the Blazor Server application.
 []: # - Configure the application to use Entity Framework with SQL Server based on the sample connection string:     "DefaultConnection": "Server=kh-server;Database=MoMoney;User Id=SA;Password={TO BE SET LATER};TrustServerCertificate=True;MultipleActiveResultSets=true;",
