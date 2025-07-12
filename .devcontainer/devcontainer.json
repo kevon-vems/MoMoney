@@ -1,0 +1,16 @@
+{
+    "name": "MoMoney",
+    "build": {
+        "dockerfile": "Dockerfile",
+        "context": ".."
+    },
+    "workspaceFolder": "/workspace/MoMoney",
+    "customizations": {
+        "vscode": {
+            "extensions": [
+                "ms-dotnettools.csharp"
+            ]
+        }
+    },
+    "postCreateCommand": "dotnet restore MoMoney.sln"
+}
