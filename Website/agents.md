@@ -1,8 +1,37 @@
 You should use the Money project as a ROUGH guide for completing this Blazor website.
 Only follow it conceptually.
 The high level concepts we will model first are:
-[]: # Do some research on best practices 
-[]: # Create the models for the investments, income sources, tax categories, and tax schedules.
+[]: # Do some research on best practices for retirement applications.  Reference: https://github.com/DougPomerenke/YARP-UI as an example
+[]: # Create the models for the investments, income sources, tax categories, and tax schedules based on the Money project AND the code below AND your research into best practices.
+[]: # Use Entity Framework Core for data access.
+[]: # Create a Blazor Server application with the following structure:
+[]: # - Data: Contains the Entity Framework Core DbContext and models.
+[]: # - Pages: Contains the Blazor pages for the application.
+[]: # - Services: Contains any services needed for data access or business logic.
+[]: # - wwwroot: Contains static files like CSS, JavaScript, and images.
+[]: # - Shared: Contains shared components like navigation menus and footers.
+[]: # - Layouts: Contains layout components for the application.
+[]: # - Components: Contains reusable Blazor components.
+[]: # - Properties: Contains the project properties and settings.
+[]: # - Program.cs: The entry point for the Blazor Server application.
+[]: # - Startup.cs: The startup configuration for the Blazor Server application.
+[]: # - appsettings.json: The configuration file for the Blazor Server application.
+[]: # - appsettings.Development.json: The development configuration file for the Blazor Server application.
+[]: # - wwwroot/index.html: The main HTML file for the Blazor Server application.
+[]: # - wwwroot/css/app.css: The main CSS file for the Blazor Server application.
+[]: # - wwwroot/js/app.js: The main JavaScript file for the Blazor Server application.
+[]: # - Configure the application to use Entity Framework with SQL Server based on the sample connection string:     "DefaultConnection": "Server=kh-server;Database=MoMoney;User Id=SA;Password={TO BE SET LATER};TrustServerCertificate=True;MultipleActiveResultSets=true;",
+[]: # - Use EF Migrations
+[]: # - Use Tailwind 4 for styling the application.
+[]: # - Use Blazor components for the UI, including forms, tables, and charts.
+[]: # - Use a responsive design to ensure the application works well on both desktop and mobile devices.
+[]: # - Use Blazor's built-in authentication and authorization features to secure the application.
+[]: # - Use Blazor's built-in localization features to support multiple languages.
+[]: # - Use Blazor's built-in error handling features to handle exceptions and display error messages to the user.
+[]: # - Use Blazor's built-in logging features to log application events and errors.
+[]: # Create a basic UI layout with a navigation menu.
+[]: # Create a Blazor page to display and edit the retirement planning parameters (filing status, state, simulation years, inflation rates).
+[]: # Create a Blazor page to display and edit the people involved in the retirement plan.
 []: # Use Entity Framework and migrations to create the database schema.
 []: # Create a Blazor page to display and edit the investments.
 []: # Create a Blazor page to display and edit the income sources.
