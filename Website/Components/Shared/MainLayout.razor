@@ -1,7 +1,7 @@
 @inherits LayoutComponentBase
 
 <div class="flex min-h-screen">
-    <div class="@GetNavClass()" style="@(showNav ? "display:block;" : "display:none;")">
+    <div class="@GetNavClass() @(showNav ? "" : "hidden")">
         <NavMenu />
     </div>
 
