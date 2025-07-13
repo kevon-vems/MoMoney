@@ -1,0 +1,125 @@
+@page "/assets"
+@using RetirementPlanner.Models
+@using RetirementPlanner.Services
+@inject IAssetService AssetService
+
+<h1 class="text-2xl font-bold mb-4">Assets</h1>
+<button class="px-4 py-2 mb-2 bg-blue-600 text-white rounded" @onclick="OpenAddModal">Add Asset</button>
+
+@if (_assets is null)
+{
+    <p>Loading...</p>
+}
+else if (_assets.Count == 0)
+{
+    <p>No assets defined.</p>
+}
+else
+{
+    <table class="min-w-full divide-y divide-gray-200">
+        <thead class="bg-gray-50">
+            <tr>
+                <th class="px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Name</th>
+                <th class="px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Value</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody class="bg-white divide-y divide-gray-200">
+            @foreach (var asset in _assets)
+            {
+                <tr>
+                    <td class="px-3 py-2">@asset.Name</td>
+                    <td class="px-3 py-2">@asset.Value.ToString("C")</td>
+                    <td class="px-3 py-2 text-right">
+                        <button class="text-blue-500 mr-2" @onclick="() => OpenEditModal(asset)">Edit</button>
+                        <button class="text-red-500" @onclick="() => DeleteAsset(asset.Id)">Delete</button>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+@if (IsModalOpen)
+{
+    <div class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
+        <div class="bg-white p-4 rounded shadow w-full max-w-md">
+            <h2 class="text-xl font-bold mb-2">@(_editingAsset.Id == 0 ? "Add" : "Edit") Asset</h2>
+            <EditForm Model="_editingAsset" OnValidSubmit="SaveAsset">
+                <DataAnnotationsValidator />
+                <ValidationSummary />
+                <div class="mb-2">
+                    <label class="block text-sm font-medium">Name</label>
+                    <InputText class="border rounded w-full" @bind-Value="_editingAsset.Name" />
+                </div>
+                <div class="mb-2">
+                    <label class="block text-sm font-medium">Value</label>
+                    <InputNumber class="border rounded w-full" @bind-Value="_editingAsset.Value" />
+                </div>
+                <div class="flex justify-end space-x-2">
+                    <button type="submit" class="px-4 py-2 bg-blue-600 text-white rounded">Save</button>
+                    <button type="button" class="px-4 py-2 bg-gray-300 rounded" @onclick="CloseModal">Cancel</button>
+                </div>
+            </EditForm>
+        </div>
+    </div>
+}
+
+@code {
+    private List<Asset>? _assets;
+    private Asset _editingAsset = new();
+    private bool IsModalOpen;
+
+    protected override async Task OnInitializedAsync()
+    {
+        await LoadAssets();
+    }
+
+    private async Task LoadAssets()
+    {
+        _assets = await AssetService.GetAllAsync();
+    }
+
+    private void OpenAddModal()
+    {
+        _editingAsset = new Asset();
+        IsModalOpen = true;
+    }
+
+    private void OpenEditModal(Asset asset)
+    {
+        _editingAsset = new Asset
+        {
+            Id = asset.Id,
+            Name = asset.Name,
+            Value = asset.Value
+        };
+        IsModalOpen = true;
+    }
+
+    private async Task SaveAsset()
+    {
+        if (_editingAsset.Id == 0)
+        {
+            await AssetService.AddAsync(_editingAsset);
+        }
+        else
+        {
+            await AssetService.UpdateAsync(_editingAsset);
+        }
+
+        await LoadAssets();
+        CloseModal();
+    }
+
+    private async Task DeleteAsset(int id)
+    {
+        await AssetService.DeleteAsync(id);
+        await LoadAssets();
+    }
+
+    private void CloseModal()
+    {
+        IsModalOpen = false;
+    }
+}

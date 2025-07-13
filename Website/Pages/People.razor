@@ -1,0 +1,126 @@
+@page "/people"
+@using RetirementPlanner.Models
+@using RetirementPlanner.Services
+@inject IPersonService PersonService
+
+<h1 class="text-2xl font-bold mb-4">People</h1>
+
+<button class="px-4 py-2 mb-2 bg-blue-600 text-white rounded" @onclick="OpenAddModal">Add Person</button>
+
+@if (_people is null)
+{
+    <p>Loading...</p>
+}
+else if (_people.Count == 0)
+{
+    <p>No people defined.</p>
+}
+else
+{
+    <table class="min-w-full divide-y divide-gray-200">
+        <thead class="bg-gray-50">
+            <tr>
+                <th class="px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Name</th>
+                <th class="px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Birth Date</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody class="bg-white divide-y divide-gray-200">
+            @foreach (var person in _people)
+            {
+                <tr>
+                    <td class="px-3 py-2">@person.Name</td>
+                    <td class="px-3 py-2">@person.BirthDate.ToString("yyyy-MM-dd")</td>
+                    <td class="px-3 py-2 text-right">
+                        <button class="text-blue-500 mr-2" @onclick="() => OpenEditModal(person)">Edit</button>
+                        <button class="text-red-500" @onclick="() => DeletePerson(person.Id)">Delete</button>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+@if (IsModalOpen)
+{
+    <div class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
+        <div class="bg-white p-4 rounded shadow w-full max-w-md">
+            <h2 class="text-xl font-bold mb-2">@(_editingPerson.Id == 0 ? "Add" : "Edit") Person</h2>
+            <EditForm Model="_editingPerson" OnValidSubmit="SavePerson">
+                <DataAnnotationsValidator />
+                <ValidationSummary />
+                <div class="mb-2">
+                    <label class="block text-sm font-medium">Name</label>
+                    <InputText class="border rounded w-full" @bind-Value="_editingPerson.Name" />
+                </div>
+                <div class="mb-2">
+                    <label class="block text-sm font-medium">Birth Date</label>
+                    <InputDate @bind-Value="_editingPerson.BirthDate" class="border rounded w-full" />
+                </div>
+                <div class="flex justify-end space-x-2">
+                    <button type="submit" class="px-4 py-2 bg-blue-600 text-white rounded">Save</button>
+                    <button type="button" class="px-4 py-2 bg-gray-300 rounded" @onclick="CloseModal">Cancel</button>
+                </div>
+            </EditForm>
+        </div>
+    </div>
+}
+
+@code {
+    private List<Person>? _people;
+    private Person _editingPerson = new();
+    private bool IsModalOpen;
+
+    protected override async Task OnInitializedAsync()
+    {
+        await LoadPeople();
+    }
+
+    private async Task LoadPeople()
+    {
+        _people = await PersonService.GetAllAsync();
+    }
+
+    private void OpenAddModal()
+    {
+        _editingPerson = new Person { BirthDate = DateOnly.FromDateTime(DateTime.Today) };
+        IsModalOpen = true;
+    }
+
+    private void OpenEditModal(Person person)
+    {
+        _editingPerson = new Person
+        {
+            Id = person.Id,
+            Name = person.Name,
+            BirthDate = person.BirthDate
+        };
+        IsModalOpen = true;
+    }
+
+    private async Task SavePerson()
+    {
+        if (_editingPerson.Id == 0)
+        {
+            await PersonService.AddAsync(_editingPerson);
+        }
+        else
+        {
+            await PersonService.UpdateAsync(_editingPerson);
+        }
+
+        await LoadPeople();
+        CloseModal();
+    }
+
+    private async Task DeletePerson(int id)
+    {
+        await PersonService.DeleteAsync(id);
+        await LoadPeople();
+    }
+
+    private void CloseModal()
+    {
+        IsModalOpen = false;
+    }
+}

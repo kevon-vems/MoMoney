@@ -1,0 +1,125 @@
+@page "/expenses"
+@using RetirementPlanner.Models
+@using RetirementPlanner.Services
+@inject IExpenseService ExpenseService
+
+<h1 class="text-2xl font-bold mb-4">Expenses</h1>
+<button class="px-4 py-2 mb-2 bg-blue-600 text-white rounded" @onclick="OpenAddModal">Add Expense</button>
+
+@if (_expenses is null)
+{
+    <p>Loading...</p>
+}
+else if (_expenses.Count == 0)
+{
+    <p>No expenses defined.</p>
+}
+else
+{
+    <table class="min-w-full divide-y divide-gray-200">
+        <thead class="bg-gray-50">
+            <tr>
+                <th class="px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Category</th>
+                <th class="px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Amount</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody class="bg-white divide-y divide-gray-200">
+            @foreach (var expense in _expenses)
+            {
+                <tr>
+                    <td class="px-3 py-2">@expense.Category</td>
+                    <td class="px-3 py-2">@expense.AnnualAmount.ToString("C")</td>
+                    <td class="px-3 py-2 text-right">
+                        <button class="text-blue-500 mr-2" @onclick="() => OpenEditModal(expense)">Edit</button>
+                        <button class="text-red-500" @onclick="() => DeleteExpense(expense.Id)">Delete</button>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+@if (IsModalOpen)
+{
+    <div class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
+        <div class="bg-white p-4 rounded shadow w-full max-w-md">
+            <h2 class="text-xl font-bold mb-2">@(_editingExpense.Id == 0 ? "Add" : "Edit") Expense</h2>
+            <EditForm Model="_editingExpense" OnValidSubmit="SaveExpense">
+                <DataAnnotationsValidator />
+                <ValidationSummary />
+                <div class="mb-2">
+                    <label class="block text-sm font-medium">Category</label>
+                    <InputText class="border rounded w-full" @bind-Value="_editingExpense.Category" />
+                </div>
+                <div class="mb-2">
+                    <label class="block text-sm font-medium">Amount</label>
+                    <InputNumber class="border rounded w-full" @bind-Value="_editingExpense.AnnualAmount" />
+                </div>
+                <div class="flex justify-end space-x-2">
+                    <button type="submit" class="px-4 py-2 bg-blue-600 text-white rounded">Save</button>
+                    <button type="button" class="px-4 py-2 bg-gray-300 rounded" @onclick="CloseModal">Cancel</button>
+                </div>
+            </EditForm>
+        </div>
+    </div>
+}
+
+@code {
+    private List<Expense>? _expenses;
+    private Expense _editingExpense = new();
+    private bool IsModalOpen;
+
+    protected override async Task OnInitializedAsync()
+    {
+        await LoadExpenses();
+    }
+
+    private async Task LoadExpenses()
+    {
+        _expenses = await ExpenseService.GetAllAsync();
+    }
+
+    private void OpenAddModal()
+    {
+        _editingExpense = new Expense();
+        IsModalOpen = true;
+    }
+
+    private void OpenEditModal(Expense expense)
+    {
+        _editingExpense = new Expense
+        {
+            Id = expense.Id,
+            Category = expense.Category,
+            AnnualAmount = expense.AnnualAmount
+        };
+        IsModalOpen = true;
+    }
+
+    private async Task SaveExpense()
+    {
+        if (_editingExpense.Id == 0)
+        {
+            await ExpenseService.AddAsync(_editingExpense);
+        }
+        else
+        {
+            await ExpenseService.UpdateAsync(_editingExpense);
+        }
+
+        await LoadExpenses();
+        CloseModal();
+    }
+
+    private async Task DeleteExpense(int id)
+    {
+        await ExpenseService.DeleteAsync(id);
+        await LoadExpenses();
+    }
+
+    private void CloseModal()
+    {
+        IsModalOpen = false;
+    }
+}

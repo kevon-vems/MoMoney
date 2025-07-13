@@ -1,0 +1,138 @@
+@page "/rollovers"
+@using RetirementPlanner.Models
+@using RetirementPlanner.Services
+@inject IInvestmentRolloverService InvestmentRolloverService
+
+<h1 class="text-2xl font-bold mb-4">Investment Rollovers</h1>
+<button class="px-4 py-2 mb-2 bg-blue-600 text-white rounded" @onclick="OpenAddModal">Add Rollover</button>
+
+@if (_rollovers is null)
+{
+    <p>Loading...</p>
+}
+else if (_rollovers.Count == 0)
+{
+    <p>No rollovers defined.</p>
+}
+else
+{
+    <table class="min-w-full divide-y divide-gray-200">
+        <thead class="bg-gray-50">
+            <tr>
+                <th class="px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Source</th>
+                <th class="px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Destination</th>
+                <th class="px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Amount</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody class="bg-white divide-y divide-gray-200">
+            @foreach (var roll in _rollovers)
+            {
+                <tr>
+                    <td class="px-3 py-2">@roll.SourceInvestmentId</td>
+                    <td class="px-3 py-2">@roll.DestinationInvestmentId</td>
+                    <td class="px-3 py-2">@roll.Amount.ToString("C")</td>
+                    <td class="px-3 py-2 text-right">
+                        <button class="text-blue-500 mr-2" @onclick="() => OpenEditModal(roll)">Edit</button>
+                        <button class="text-red-500" @onclick="() => DeleteRollover(roll.Id)">Delete</button>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+@if (IsModalOpen)
+{
+    <div class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
+        <div class="bg-white p-4 rounded shadow w-full max-w-md">
+            <h2 class="text-xl font-bold mb-2">@(_editingRollover.Id == 0 ? "Add" : "Edit") Rollover</h2>
+            <EditForm Model="_editingRollover" OnValidSubmit="SaveRollover">
+                <DataAnnotationsValidator />
+                <ValidationSummary />
+                <div class="mb-2">
+                    <label class="block text-sm font-medium">Source Investment Id</label>
+                    <InputNumber class="border rounded w-full" @bind-Value="_editingRollover.SourceInvestmentId" />
+                </div>
+                <div class="mb-2">
+                    <label class="block text-sm font-medium">Destination Investment Id</label>
+                    <InputNumber class="border rounded w-full" @bind-Value="_editingRollover.DestinationInvestmentId" />
+                </div>
+                <div class="mb-2">
+                    <label class="block text-sm font-medium">Amount</label>
+                    <InputNumber class="border rounded w-full" @bind-Value="_editingRollover.Amount" />
+                </div>
+                <div class="mb-2">
+                    <label class="block text-sm font-medium">Year</label>
+                    <InputNumber class="border rounded w-full" @bind-Value="_editingRollover.Year" />
+                </div>
+                <div class="flex justify-end space-x-2">
+                    <button type="submit" class="px-4 py-2 bg-blue-600 text-white rounded">Save</button>
+                    <button type="button" class="px-4 py-2 bg-gray-300 rounded" @onclick="CloseModal">Cancel</button>
+                </div>
+            </EditForm>
+        </div>
+    </div>
+}
+
+@code {
+    private List<InvestmentRollover>? _rollovers;
+    private InvestmentRollover _editingRollover = new();
+    private bool IsModalOpen;
+
+    protected override async Task OnInitializedAsync()
+    {
+        await LoadRollovers();
+    }
+
+    private async Task LoadRollovers()
+    {
+        _rollovers = await InvestmentRolloverService.GetAllAsync();
+    }
+
+    private void OpenAddModal()
+    {
+        _editingRollover = new InvestmentRollover();
+        IsModalOpen = true;
+    }
+
+    private void OpenEditModal(InvestmentRollover roll)
+    {
+        _editingRollover = new InvestmentRollover
+        {
+            Id = roll.Id,
+            SourceInvestmentId = roll.SourceInvestmentId,
+            DestinationInvestmentId = roll.DestinationInvestmentId,
+            Amount = roll.Amount,
+            Year = roll.Year,
+            RolloverType = roll.RolloverType
+        };
+        IsModalOpen = true;
+    }
+
+    private async Task SaveRollover()
+    {
+        if (_editingRollover.Id == 0)
+        {
+            await InvestmentRolloverService.AddAsync(_editingRollover);
+        }
+        else
+        {
+            await InvestmentRolloverService.UpdateAsync(_editingRollover);
+        }
+
+        await LoadRollovers();
+        CloseModal();
+    }
+
+    private async Task DeleteRollover(int id)
+    {
+        await InvestmentRolloverService.DeleteAsync(id);
+        await LoadRollovers();
+    }
+
+    private void CloseModal()
+    {
+        IsModalOpen = false;
+    }
+}
