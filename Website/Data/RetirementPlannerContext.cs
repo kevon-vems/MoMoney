@@ -69,5 +69,17 @@ public class RetirementPlannerContext : DbContext
         modelBuilder.Entity<InvestmentRollover>()
             .Property(r => r.RolloverType)
             .HasConversion<string>();
+
+        modelBuilder.Entity<InvestmentRollover>()
+            .HasOne(r => r.SourceInvestment)
+            .WithMany()
+            .HasForeignKey(r => r.SourceInvestmentId)
+            .OnDelete(DeleteBehavior.Restrict);
+
+        modelBuilder.Entity<InvestmentRollover>()
+            .HasOne(r => r.DestinationInvestment)
+            .WithMany()
+            .HasForeignKey(r => r.DestinationInvestmentId)
+            .OnDelete(DeleteBehavior.Restrict);
     }
 }

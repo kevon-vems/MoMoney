@@ -177,13 +177,13 @@ namespace Retire.Migrations
                         column: x => x.DestinationInvestmentId,
                         principalTable: "Investments",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_InvestmentRollovers_Investments_SourceInvestmentId",
                         column: x => x.SourceInvestmentId,
                         principalTable: "Investments",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
