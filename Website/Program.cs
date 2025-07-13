@@ -1,10 +1,25 @@
 using Retire.Components;
+using Microsoft.EntityFrameworkCore;
+using RetirementPlanner.Data;
+using RetirementPlanner.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddRazorComponents()
     .AddInteractiveServerComponents();
+
+builder.Services.AddDbContext<RetirementPlannerContext>(options =>
+    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+
+builder.Services.AddScoped<IPersonService, PersonService>();
+builder.Services.AddScoped<IInvestmentService, InvestmentService>();
+builder.Services.AddScoped<IIncomeService, IncomeService>();
+builder.Services.AddScoped<IExpenseService, ExpenseService>();
+builder.Services.AddScoped<IAssetService, AssetService>();
+builder.Services.AddScoped<ITaxBracketService, TaxBracketService>();
+builder.Services.AddScoped<IInvestmentRolloverService, InvestmentRolloverService>();
+builder.Services.AddScoped<ISurplusAllocationService, SurplusAllocationService>();
 
 var app = builder.Build();
 

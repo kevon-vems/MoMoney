@@ -1,0 +1,144 @@
+@page "/taxbrackets"
+@using RetirementPlanner.Models
+@using RetirementPlanner.Services
+@inject ITaxBracketService TaxBracketService
+
+<h1 class="text-2xl font-bold mb-4">Tax Brackets</h1>
+<button class="px-4 py-2 mb-2 bg-blue-600 text-white rounded" @onclick="OpenAddModal">Add Tax Bracket</button>
+
+@if (_brackets is null)
+{
+    <p>Loading...</p>
+}
+else if (_brackets.Count == 0)
+{
+    <p>No tax brackets defined.</p>
+}
+else
+{
+    <table class="min-w-full divide-y divide-gray-200">
+        <thead class="bg-gray-50">
+            <tr>
+                <th class="px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Type</th>
+                <th class="px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Min</th>
+                <th class="px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Max</th>
+                <th class="px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Rate</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody class="bg-white divide-y divide-gray-200">
+            @foreach (var bracket in _brackets)
+            {
+                <tr>
+                    <td class="px-3 py-2">@bracket.TaxType</td>
+                    <td class="px-3 py-2">@bracket.MinIncome.ToString("C")</td>
+                    <td class="px-3 py-2">@bracket.MaxIncome.ToString("C")</td>
+                    <td class="px-3 py-2">@bracket.Rate</td>
+                    <td class="px-3 py-2 text-right">
+                        <button class="text-blue-500 mr-2" @onclick="() => OpenEditModal(bracket)">Edit</button>
+                        <button class="text-red-500" @onclick="() => DeleteBracket(bracket.Id)">Delete</button>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+@if (IsModalOpen)
+{
+    <div class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
+        <div class="bg-white p-4 rounded shadow w-full max-w-md">
+            <h2 class="text-xl font-bold mb-2">@(_editingBracket.Id == 0 ? "Add" : "Edit") Tax Bracket</h2>
+            <EditForm Model="_editingBracket" OnValidSubmit="SaveBracket">
+                <DataAnnotationsValidator />
+                <ValidationSummary />
+                <div class="mb-2">
+                    <label class="block text-sm font-medium">Type</label>
+                    <InputSelect class="border rounded w-full" @bind-Value="_editingBracket.TaxType">
+                        @foreach (var val in Enum.GetValues<TaxType>())
+                        {
+                            <option value="@val">@val</option>
+                        }
+                    </InputSelect>
+                </div>
+                <div class="mb-2">
+                    <label class="block text-sm font-medium">Min Income</label>
+                    <InputNumber class="border rounded w-full" @bind-Value="_editingBracket.MinIncome" />
+                </div>
+                <div class="mb-2">
+                    <label class="block text-sm font-medium">Max Income</label>
+                    <InputNumber class="border rounded w-full" @bind-Value="_editingBracket.MaxIncome" />
+                </div>
+                <div class="mb-2">
+                    <label class="block text-sm font-medium">Rate</label>
+                    <InputNumber class="border rounded w-full" @bind-Value="_editingBracket.Rate" />
+                </div>
+                <div class="flex justify-end space-x-2">
+                    <button type="submit" class="px-4 py-2 bg-blue-600 text-white rounded">Save</button>
+                    <button type="button" class="px-4 py-2 bg-gray-300 rounded" @onclick="CloseModal">Cancel</button>
+                </div>
+            </EditForm>
+        </div>
+    </div>
+}
+
+@code {
+    private List<TaxBracket>? _brackets;
+    private TaxBracket _editingBracket = new();
+    private bool IsModalOpen;
+
+    protected override async Task OnInitializedAsync()
+    {
+        await LoadBrackets();
+    }
+
+    private async Task LoadBrackets()
+    {
+        _brackets = await TaxBracketService.GetAllAsync();
+    }
+
+    private void OpenAddModal()
+    {
+        _editingBracket = new TaxBracket();
+        IsModalOpen = true;
+    }
+
+    private void OpenEditModal(TaxBracket bracket)
+    {
+        _editingBracket = new TaxBracket
+        {
+            Id = bracket.Id,
+            TaxType = bracket.TaxType,
+            MinIncome = bracket.MinIncome,
+            MaxIncome = bracket.MaxIncome,
+            Rate = bracket.Rate
+        };
+        IsModalOpen = true;
+    }
+
+    private async Task SaveBracket()
+    {
+        if (_editingBracket.Id == 0)
+        {
+            await TaxBracketService.AddAsync(_editingBracket);
+        }
+        else
+        {
+            await TaxBracketService.UpdateAsync(_editingBracket);
+        }
+
+        await LoadBrackets();
+        CloseModal();
+    }
+
+    private async Task DeleteBracket(int id)
+    {
+        await TaxBracketService.DeleteAsync(id);
+        await LoadBrackets();
+    }
+
+    private void CloseModal()
+    {
+        IsModalOpen = false;
+    }
+}

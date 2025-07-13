@@ -1,0 +1,138 @@
+@page "/investments"
+@using RetirementPlanner.Models
+@using RetirementPlanner.Services
+@inject IInvestmentService InvestmentService
+
+<h1 class="text-2xl font-bold mb-4">Investments</h1>
+
+<button class="px-4 py-2 mb-2 bg-blue-600 text-white rounded" @onclick="OpenAddModal">Add Investment</button>
+
+@if (_investments is null)
+{
+    <p>Loading...</p>
+}
+else if (_investments.Count == 0)
+{
+    <p>No investments defined.</p>
+}
+else
+{
+    <table class="min-w-full divide-y divide-gray-200">
+        <thead class="bg-gray-50">
+            <tr>
+                <th class="px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Name</th>
+                <th class="px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Type</th>
+                <th class="px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Balance</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody class="bg-white divide-y divide-gray-200">
+            @foreach (var investment in _investments)
+            {
+                <tr>
+                    <td class="px-3 py-2">@investment.Name</td>
+                    <td class="px-3 py-2">@investment.InvestmentType</td>
+                    <td class="px-3 py-2">@investment.CurrentBalance.ToString("C")</td>
+                    <td class="px-3 py-2 text-right">
+                        <button class="text-blue-500 mr-2" @onclick="() => OpenEditModal(investment)">Edit</button>
+                        <button class="text-red-500" @onclick="() => DeleteInvestment(investment.Id)">Delete</button>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+@if (IsModalOpen)
+{
+    <div class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
+        <div class="bg-white p-4 rounded shadow w-full max-w-md">
+            <h2 class="text-xl font-bold mb-2">@(_editingInvestment.Id == 0 ? "Add" : "Edit") Investment</h2>
+            <EditForm Model="_editingInvestment" OnValidSubmit="SaveInvestment">
+                <DataAnnotationsValidator />
+                <ValidationSummary />
+                <div class="mb-2">
+                    <label class="block text-sm font-medium">Name</label>
+                    <InputText class="border rounded w-full" @bind-Value="_editingInvestment.Name" />
+                </div>
+                <div class="mb-2">
+                    <label class="block text-sm font-medium">Type</label>
+                    <InputSelect class="border rounded w-full" @bind-Value="_editingInvestment.InvestmentType">
+                        @foreach (var val in Enum.GetValues<InvestmentType>())
+                        {
+                            <option value="@val">@val</option>
+                        }
+                    </InputSelect>
+                </div>
+                <div class="mb-2">
+                    <label class="block text-sm font-medium">Current Balance</label>
+                    <InputNumber class="border rounded w-full" @bind-Value="_editingInvestment.CurrentBalance" />
+                </div>
+                <div class="flex justify-end space-x-2">
+                    <button type="submit" class="px-4 py-2 bg-blue-600 text-white rounded">Save</button>
+                    <button type="button" class="px-4 py-2 bg-gray-300 rounded" @onclick="CloseModal">Cancel</button>
+                </div>
+            </EditForm>
+        </div>
+    </div>
+}
+
+@code {
+    private List<Investment>? _investments;
+    private Investment _editingInvestment = new();
+    private bool IsModalOpen;
+
+    protected override async Task OnInitializedAsync()
+    {
+        await LoadInvestments();
+    }
+
+    private async Task LoadInvestments()
+    {
+        _investments = await InvestmentService.GetAllAsync();
+    }
+
+    private void OpenAddModal()
+    {
+        _editingInvestment = new Investment();
+        IsModalOpen = true;
+    }
+
+    private void OpenEditModal(Investment investment)
+    {
+        _editingInvestment = new Investment
+        {
+            Id = investment.Id,
+            Name = investment.Name,
+            InvestmentType = investment.InvestmentType,
+            CurrentBalance = investment.CurrentBalance
+        };
+        IsModalOpen = true;
+    }
+
+    private async Task SaveInvestment()
+    {
+        if (_editingInvestment.Id == 0)
+        {
+            await InvestmentService.AddAsync(_editingInvestment);
+        }
+        else
+        {
+            await InvestmentService.UpdateAsync(_editingInvestment);
+        }
+
+        await LoadInvestments();
+        CloseModal();
+    }
+
+    private async Task DeleteInvestment(int id)
+    {
+        await InvestmentService.DeleteAsync(id);
+        await LoadInvestments();
+    }
+
+    private void CloseModal()
+    {
+        IsModalOpen = false;
+    }
+}
