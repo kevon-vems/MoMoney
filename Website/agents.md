@@ -1,9 +1,13 @@
-# Agent: RetirementApp-Research
+Read the files in order:
+Agent1-research.md
+agent2-models-investment0income.md
+agent3-models-expense-asset-tax.md
+agent4-models-people-rollover-surplus.md
+agent5.md
+agent6.md
+agent7.md
+agent8.md
+agent9.md
+agent10.md
 
-## Task
-
-1. Research and summarize **five** best practices for retirement/financial planning web applications, focusing on .NET and Blazor if possible.
-2. Reference the Money project and also https://github.com/DougPomerenke/YARP-UI as examples.
-3. Output your summary as five bullet points, each with a 1-2 sentence rationale.
-
-When finished, output: <!-- STEP 1 COMPLETE --> and stop. Do not proceed further.
+do each in order, at the end, output step complete and do not proceed further

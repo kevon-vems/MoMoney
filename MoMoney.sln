@@ -7,6 +7,21 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Money", "ConsoleApp\Money.c
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Retire", "Website\Retire.csproj", "{E7FE9183-2F52-3620-7F52-EAEACA66F8EE}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "agents", "agents", "{02EA681E-C7D8-13C7-8484-4AC65E1B71E8}"
+	ProjectSection(SolutionItems) = preProject
+		Website\agent1-research.md = Website\agent1-research.md
+		Website\agent10.md = Website\agent10.md
+		Website\agent2-models-investment-income.md = Website\agent2-models-investment-income.md
+		Website\agent3-models-expense-asset-tax.md = Website\agent3-models-expense-asset-tax.md
+		Website\agent4-models-people-rollover-surplus.md = Website\agent4-models-people-rollover-surplus.md
+		Website\agent5.md = Website\agent5.md
+		Website\agent6.md = Website\agent6.md
+		Website\agent7.md = Website\agent7.md
+		Website\agent8.md = Website\agent8.md
+		Website\agent9.md = Website\agent9.md
+		Website\agents.md = Website\agents.md
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
