@@ -1,0 +1,8 @@
+{
+  "name": "mo-money-website",
+  "version": "1.0.0",
+  "private": true,
+  "devDependencies": {
+    "tailwindcss": "^4.1.11"
+  }
+}
