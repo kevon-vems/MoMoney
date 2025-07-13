@@ -1,7 +1,7 @@
 @inherits LayoutComponentBase
 
 <div class="flex min-h-screen">
-    <div class="bg-gray-800 text-white w-64 p-4 space-y-2" style="@(showNav ? \"display:block\" : \"display:none\")" class:md\:block="true">
+    <div class="@GetNavClass()" style="@(showNav ? "display:block;" : "display:none;")">
         <NavMenu />
     </div>
 
@@ -18,4 +18,11 @@
 @code {
     private bool showNav;
     private void ToggleNav() => showNav = !showNav;
+
+    private string GetNavClass()
+    {
+        var baseClass = "bg-gray-800 text-white w-64 p-4 space-y-2";
+        // Add md:block if needed (always true in your original code)
+        return $"{baseClass} md:block";
+    }
 }
