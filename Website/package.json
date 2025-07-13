@@ -1,0 +1,8 @@
+{
+  "name": "retirement-planner",
+  "private": true,
+  "devDependencies": {
+    "tailwindcss": "^3.4.0",
+    "@tailwindcss/postcss": "^0.1.0"
+  }
+}
