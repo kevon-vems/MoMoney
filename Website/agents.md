@@ -18,7 +18,7 @@ It exists to coordinate, sequence, and standardize all subsequent agent.md files
 
 ## Technical Constraints
 
-- .NET 9, C#, Blazor (Server or WASM)
+- .NET 9, C#, Blazor (Server)
 - Entity Framework Core 9 for persistence (SQL Server)
 - Tailwind CSS v4 for UI styling (no other CSS frameworks)
 - All code in English, all UI in English
