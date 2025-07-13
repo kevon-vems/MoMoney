@@ -382,13 +382,13 @@ namespace Retire.Migrations
                     b.HasOne("RetirementPlanner.Models.Investment", "DestinationInvestment")
                         .WithMany()
                         .HasForeignKey("DestinationInvestmentId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.HasOne("RetirementPlanner.Models.Investment", "SourceInvestment")
                         .WithMany()
                         .HasForeignKey("SourceInvestmentId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.Navigation("DestinationInvestment");
