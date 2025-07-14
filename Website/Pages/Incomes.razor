@@ -2,7 +2,6 @@
 @using RetirementPlanner.Models
 @using RetirementPlanner.Services
 @inject IIncomeService IncomeService
-@inject IPersonService PersonService
 
 <h1 class="text-2xl font-bold mb-4">Incomes</h1>
 <button class="px-4 py-2 mb-2 bg-blue-600 text-white rounded" @onclick="OpenAddModal">Add Income</button>
@@ -83,14 +82,8 @@ else
                     <InputNumber class="form-input" @bind-Value="_editingIncome.EndYear" />
                 </div>
                 <div class="mb-2">
-                    <label class="form-label"><span class="info-icon" title="Linked person">ⓘ</span> Person</label>
-                    <InputSelect class="form-input" @bind-Value="_editingIncome.PersonId">
-                        <option value="">-- None --</option>
-                        @foreach (var person in _people ?? Enumerable.Empty<Person>())
-                        {
-                            <option value="@person.Id">@person.Name</option>
-                        }
-                    </InputSelect>
+                    <label class="form-label"><span class="info-icon" title="Linked person">ⓘ</span> Person Id</label>
+                    <InputNumber class="form-input" @bind-Value="_editingIncome.PersonId" />
                 </div>
                 <div class="flex justify-end space-x-2">
                     <button type="submit" class="px-4 py-2 bg-blue-600 text-white rounded">Save</button>
@@ -103,13 +96,11 @@ else
 
 @code {
     private List<Income>? _incomes;
-    private List<Person>? _people;
     private Income _editingIncome = new();
     private bool IsModalOpen;
 
     protected override async Task OnInitializedAsync()
     {
-        await LoadPeople();
         await LoadIncomes();
     }
 
@@ -118,18 +109,9 @@ else
         _incomes = await IncomeService.GetAllAsync();
     }
 
-    private async Task LoadPeople()
-    {
-        _people = await PersonService.GetAllAsync();
-    }
-
     private void OpenAddModal()
     {
-        _editingIncome = new Income
-        {
-            StartYear = DateTime.Now.Year,
-            PersonId = _people?.FirstOrDefault()?.Id
-        };
+        _editingIncome = new Income { StartYear = DateTime.Now.Year };
         IsModalOpen = true;
     }
 
