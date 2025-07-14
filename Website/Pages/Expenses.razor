@@ -2,6 +2,7 @@
 @using RetirementPlanner.Models
 @using RetirementPlanner.Services
 @inject IExpenseService ExpenseService
+@inject IScenarioService ScenarioService
 
 <div class="mb-6 p-4 bg-gray-100 rounded">
     <h2 class="text-xl font-semibold mb-2">About Expenses</h2>
@@ -114,11 +115,13 @@ else
 
 @code {
     private List<Expense>? _expenses;
+    private List<Scenario>? _scenarios;
     private Expense _editingExpense = new();
     private bool IsModalOpen;
 
     protected override async Task OnInitializedAsync()
     {
+        await LoadScenarios();
         await LoadExpenses();
     }
 
@@ -127,9 +130,14 @@ else
         _expenses = await ExpenseService.GetAllAsync();
     }
 
+    private async Task LoadScenarios()
+    {
+        _scenarios = await ScenarioService.GetAllAsync();
+    }
+
     private void OpenAddModal()
     {
-        _editingExpense = new Expense { StartYear = DateTime.Now.Year };
+        _editingExpense = new Expense { StartYear = DateTime.Now.Year, ScenarioId = _scenarios?.FirstOrDefault()?.Id ?? 0 };
         IsModalOpen = true;
     }
 
@@ -144,6 +152,7 @@ else
             StartYear = expense.StartYear,
             EndYear = expense.EndYear,
             Notes = expense.Notes
+            ,ScenarioId = expense.ScenarioId
         };
         IsModalOpen = true;
     }

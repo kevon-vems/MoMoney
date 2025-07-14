@@ -8,6 +8,10 @@ public class Income
     [Key]
     public int Id { get; set; }
 
+    [ForeignKey("Scenario")]
+    public int ScenarioId { get; set; }
+    public Scenario Scenario { get; set; } = null!;
+
     [Required, StringLength(100)]
     public string Source { get; set; } = string.Empty;
 

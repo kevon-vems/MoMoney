@@ -3,6 +3,7 @@
 @using RetirementPlanner.Services
 @inject IInvestmentRolloverService InvestmentRolloverService
 @inject IInvestmentService InvestmentService
+@inject IScenarioService ScenarioService
 
 <h1 class="text-2xl font-bold mb-4">Investment Rollovers</h1>
 
@@ -107,11 +108,13 @@ else
 @code {
     private List<InvestmentRollover>? _rollovers;
     private List<Investment>? _investments;
+    private List<Scenario>? _scenarios;
     private InvestmentRollover _editingRollover = new();
     private bool IsModalOpen;
 
     protected override async Task OnInitializedAsync()
     {
+        await LoadScenarios();
         await LoadInvestments();
         await LoadRollovers();
     }
@@ -126,12 +129,18 @@ else
         _investments = await InvestmentService.GetAllAsync();
     }
 
+    private async Task LoadScenarios()
+    {
+        _scenarios = await ScenarioService.GetAllAsync();
+    }
+
     private void OpenAddModal()
     {
         _editingRollover = new InvestmentRollover
         {
             SourceInvestmentId = _investments?.FirstOrDefault()?.Id ?? 0,
-            DestinationInvestmentId = _investments?.FirstOrDefault()?.Id ?? 0
+            DestinationInvestmentId = _investments?.FirstOrDefault()?.Id ?? 0,
+            ScenarioId = _scenarios?.FirstOrDefault()?.Id ?? 0
         };
         IsModalOpen = true;
     }
@@ -145,7 +154,8 @@ else
             DestinationInvestmentId = roll.DestinationInvestmentId,
             Amount = roll.Amount,
             Year = roll.Year,
-            RolloverType = roll.RolloverType
+            RolloverType = roll.RolloverType,
+            ScenarioId = roll.ScenarioId
         };
         IsModalOpen = true;
     }
