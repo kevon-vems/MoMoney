@@ -42,18 +42,18 @@ else
 
 @if (IsModalOpen)
 {
-    <div class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
+    <div class="fixed inset-0 backdrop-blur-sm bg-white/50 flex items-center justify-center">
         <div class="bg-white p-4 rounded shadow w-full max-w-md">
             <h2 class="text-xl font-bold mb-2">@(_editingAllocation.Id == 0 ? "Add" : "Edit") Allocation</h2>
             <EditForm Model="_editingAllocation" OnValidSubmit="SaveAllocation">
                 <DataAnnotationsValidator />
                 <ValidationSummary />
                 <div class="mb-2">
-                    <label class="form-label">Investment Id <span class="info-icon" title="Investment identifier">ⓘ</span></label>
+                    <label class="form-label"><span class="info-icon" title="Investment identifier">ⓘ</span> Investment Id</label>
                     <InputNumber class="form-input" @bind-Value="_editingAllocation.InvestmentId" />
                 </div>
                 <div class="mb-2">
-                    <label class="form-label">Percentage <span class="info-icon" title="Allocation percentage">ⓘ</span></label>
+                    <label class="form-label"><span class="info-icon" title="Allocation percentage">ⓘ</span> Percentage</label>
                     <div class="percentage-wrapper">
                         <InputNumber class="form-input" @bind-Value="_editingAllocation.AllocationPercentage" />
                     </div>

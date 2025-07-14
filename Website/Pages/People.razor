@@ -68,7 +68,7 @@ else
 
 @if (IsModalOpen)
 {
-    <div class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+    <div class="fixed inset-0 backdrop-blur-sm bg-white/50 flex items-center justify-center z-50">
         <div class="bg-white rounded-lg shadow-lg w-full max-w-md border border-blue-200">
             <div class="flex items-center justify-between px-4 py-3 border-b border-blue-100 bg-blue-50 rounded-t-lg">
                 <h2 class="text-xl font-bold text-blue-900">@(_editingPerson.Id == 0 ? "Add" : "Edit") Person</h2>
@@ -79,11 +79,11 @@ else
                     <DataAnnotationsValidator />
                     <ValidationSummary />
                     <div class="mb-4">
-                        <label class="form-label">Name <span class="info-icon" title="Person's name">ⓘ</span></label>
+                        <label class="form-label"><span class="info-icon" title="Person's name">ⓘ</span> Name</label>
                         <InputText class="form-input" @bind-Value="_editingPerson.Name" />
                     </div>
                     <div class="mb-4">
-                        <label class="form-label">Birth Date <span class="info-icon" title="Date of birth">ⓘ</span></label>
+                        <label class="form-label"><span class="info-icon" title="Date of birth">ⓘ</span> Birth Date</label>
                         <InputDate @bind-Value="_editingPerson.BirthDate" class="form-input" />
                     </div>
                     <div class="flex justify-end space-x-2 mt-4">

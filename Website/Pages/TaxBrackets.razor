@@ -46,15 +46,15 @@ else
 
 @if (IsModalOpen)
 {
-    <div class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
+    <div class="fixed inset-0 backdrop-blur-sm bg-white/50 flex items-center justify-center">
         <div class="bg-white p-4 rounded shadow w-full max-w-md">
             <h2 class="text-xl font-bold mb-2">@(_editingBracket.Id == 0 ? "Add" : "Edit") Tax Bracket</h2>
             <EditForm Model="_editingBracket" OnValidSubmit="SaveBracket">
                 <DataAnnotationsValidator />
                 <ValidationSummary />
                 <div class="mb-2">
-                    <label class="form-label">Type <span class="info-icon" title="Type of tax">ⓘ</span></label>
-                    <InputSelect class="border rounded w-full" @bind-Value="_editingBracket.TaxType">
+                    <label class="form-label"><span class="info-icon" title="Type of tax">ⓘ</span> Type</label>
+                    <InputSelect class="form-input" @bind-Value="_editingBracket.TaxType">
                         @foreach (var val in Enum.GetValues<TaxType>())
                         {
                             <option value="@val">@val</option>
@@ -62,8 +62,8 @@ else
                     </InputSelect>
                 </div>
                 <div class="mb-2">
-                    <label class="form-label">Filing Status <span class="info-icon" title="Tax filing status">ⓘ</span></label>
-                    <InputSelect class="border rounded w-full" @bind-Value="_editingBracket.FilingStatus">
+                    <label class="form-label"><span class="info-icon" title="Tax filing status">ⓘ</span> Filing Status</label>
+                    <InputSelect class="form-input" @bind-Value="_editingBracket.FilingStatus">
                         @foreach (var val in Enum.GetValues<FilingStatus>())
                         {
                             <option value="@val">@val</option>
@@ -71,31 +71,31 @@ else
                     </InputSelect>
                 </div>
                 <div class="mb-2">
-                    <label class="form-label">Min Income <span class="info-icon" title="Minimum income for bracket">ⓘ</span></label>
+                    <label class="form-label"><span class="info-icon" title="Minimum income for bracket">ⓘ</span> Min Income</label>
                     <div class="currency-wrapper">
                         <InputNumber class="form-input" @bind-Value="_editingBracket.MinIncome" />
                     </div>
                 </div>
                 <div class="mb-2">
-                    <label class="form-label">Max Income <span class="info-icon" title="Maximum income for bracket">ⓘ</span></label>
+                    <label class="form-label"><span class="info-icon" title="Maximum income for bracket">ⓘ</span> Max Income</label>
                     <div class="currency-wrapper">
                         <InputNumber class="form-input" @bind-Value="_editingBracket.MaxIncome" />
                     </div>
                 </div>
                 <div class="mb-2">
-                    <label class="form-label">Rate <span class="info-icon" title="Tax rate">ⓘ</span></label>
+                    <label class="form-label"><span class="info-icon" title="Tax rate">ⓘ</span> Rate</label>
                     <div class="percentage-wrapper">
                         <InputNumber class="form-input" @bind-Value="_editingBracket.Rate" />
                     </div>
                 </div>
                 <div class="mb-2">
-                    <label class="form-label">Threshold <span class="info-icon" title="Additional threshold">ⓘ</span></label>
+                    <label class="form-label"><span class="info-icon" title="Additional threshold">ⓘ</span> Threshold</label>
                     <div class="currency-wrapper">
                         <InputNumber class="form-input" @bind-Value="_editingBracket.Threshold" />
                     </div>
                 </div>
                 <div class="mb-2">
-                    <label class="form-label">State <span class="info-icon" title="State code">ⓘ</span></label>
+                    <label class="form-label"><span class="info-icon" title="State code">ⓘ</span> State</label>
                     <InputText class="form-input" @bind-Value="_editingBracket.State" />
                 </div>
                 <div class="flex justify-end space-x-2">
