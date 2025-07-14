@@ -1,1 +1,51 @@
-﻿@import "tailwindcss";
+@import "tailwindcss";
+
+@layer base {
+  input[type="number"]::-webkit-outer-spin-button,
+  input[type="number"]::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+  input[type="number"] {
+    -moz-appearance: textfield;
+  }
+}
+
+@layer components {
+  .form-input {
+    @apply border border-gray-300 rounded w-full px-2 py-1 text-right;
+  }
+  .form-label {
+    @apply block text-sm font-medium mb-1;
+  }
+  .info-icon {
+    @apply ml-1 text-gray-400 cursor-help;
+  }
+}
+
+.currency-wrapper,
+.percentage-wrapper {
+  position: relative;
+}
+.currency-wrapper::before {
+  content: '$';
+  position: absolute;
+  left: 0.5rem;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #6b7280;
+}
+.currency-wrapper input {
+  padding-left: 1.25rem;
+}
+.percentage-wrapper::after {
+  content: '%';
+  position: absolute;
+  right: 0.5rem;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #6b7280;
+}
+.percentage-wrapper input {
+  padding-right: 1.25rem;
+}
