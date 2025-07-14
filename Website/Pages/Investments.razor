@@ -45,7 +45,7 @@ else
 
 @if (IsModalOpen)
 {
-    <div class="fixed inset-0 backdrop-blur-sm bg-white/50 flex items-center justify-center">
+    <div class="fixed inset-0 backdrop-blur-sm bg-gray-500/50 flex items-center justify-center">
         <div class="bg-white p-4 rounded shadow w-full max-w-md">
             <h2 class="text-xl font-bold mb-2">@(_editingInvestment.Id == 0 ? "Add" : "Edit") Investment</h2>
             <EditForm Model="_editingInvestment" OnValidSubmit="SaveInvestment">

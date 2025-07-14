@@ -868,6 +868,12 @@
   .bg-gray-300 {
     background-color: var(--color-gray-300);
   }
+  .bg-gray-500\/50 {
+    background-color: color-mix(in srgb, oklch(55.1% 0.027 264.364) 50%, transparent);
+    @supports (color: color-mix(in lab, red, red)) {
+      background-color: color-mix(in oklab, var(--color-gray-500) 50%, transparent);
+    }
+  }
   .bg-gray-800 {
     background-color: var(--color-gray-800);
   }
@@ -1367,7 +1373,7 @@
   color: #6b7280;
 }
 .percentage-wrapper input {
-  padding-right: 1.25rem;
+  padding-right: 1.5rem;
 }
 @property --tw-rotate-x {
   syntax: "*";
