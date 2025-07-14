@@ -1,0 +1,12 @@
+﻿@page "/TestPage"
+
+<button @onclick="Clicked">Click</button>
+<span>@message</span>
+
+@code {
+    string message = "not clicked";
+    void Clicked()
+    {
+        message = "clicked";
+    }
+}

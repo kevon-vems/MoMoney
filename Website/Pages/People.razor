@@ -3,65 +3,95 @@
 @using RetirementPlanner.Services
 @inject IPersonService PersonService
 
-<h1 class="text-2xl font-bold mb-4">People</h1>
+<h1 class="text-3xl font-extrabold mb-4 text-blue-900">People</h1>
 
-<button class="px-4 py-2 mb-2 bg-blue-600 text-white rounded" @onclick="OpenAddModal">Add Person</button>
+<!-- Help Section -->
+<div class="mb-6">
+    <button class="text-sm text-blue-700 underline mb-2" @onclick="ToggleHelp">@(_showHelp ? "Hide" : "Show") Help</button>
+    @if (_showHelp)
+    {
+        <div class="bg-blue-50 border border-blue-200 rounded p-4 text-sm text-gray-800 shadow">
+            <h2 class="text-lg font-semibold mb-2 text-blue-800">About People</h2>
+            <p>
+                This page lets you manage the list of people for your retirement plan. Each person has a name and birth date, which are used in simulations and reports. <br />
+                <span class="font-semibold">How it works:</span>
+                <ul class="list-disc ml-6 mt-2 mb-2">
+                    <li>Add people to include them in your plan.</li>
+                    <li>Edit or delete entries as needed.</li>
+                    <li>Birth dates are important for age-based calculations in the simulation.</li>
+                </ul>
+                For more details, see the <a href="/README" class="text-blue-600 underline">project README</a>.
+            </p>
+        </div>
+    }
+</div>
+
+<button class="px-4 py-2 mb-4 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded shadow transition" @onclick="OpenAddModal">
+    <span class="inline-block align-middle mr-1">+</span> Add Person
+</button>
 
 @if (_people is null)
 {
-    <p>Loading...</p>
+    <p class="text-gray-500">Loading...</p>
 }
 else if (_people.Count == 0)
 {
-    <p>No people defined.</p>
+    <p class="text-gray-500">No people defined.</p>
 }
 else
 {
-    <table class="min-w-full divide-y divide-gray-200">
-        <thead class="bg-gray-50">
-            <tr>
-                <th class="px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Name</th>
-                <th class="px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Birth Date</th>
-                <th></th>
-            </tr>
-        </thead>
-        <tbody class="bg-white divide-y divide-gray-200">
-            @foreach (var person in _people)
-            {
+    <div class="overflow-x-auto rounded shadow">
+        <table class="min-w-full divide-y divide-gray-200">
+            <thead class="bg-blue-100">
                 <tr>
-                    <td class="px-3 py-2">@person.Name</td>
-                    <td class="px-3 py-2">@person.BirthDate.ToString("yyyy-MM-dd")</td>
-                    <td class="px-3 py-2 text-right">
-                        <button class="text-blue-500 mr-2" @onclick="() => OpenEditModal(person)">Edit</button>
-                        <button class="text-red-500" @onclick="() => DeletePerson(person.Id)">Delete</button>
-                    </td>
+                    <th class="px-4 py-3 text-left text-xs font-bold text-blue-800 uppercase tracking-wider">Name</th>
+                    <th class="px-4 py-3 text-left text-xs font-bold text-blue-800 uppercase tracking-wider">Birth Date</th>
+                    <th class="px-4 py-3"></th>
                 </tr>
-            }
-        </tbody>
-    </table>
+            </thead>
+            <tbody class="bg-white divide-y divide-gray-100">
+                @foreach (var person in _people)
+                {
+                    <tr class="hover:bg-blue-50 transition">
+                        <td class="px-4 py-3">@person.Name</td>
+                        <td class="px-4 py-3">@person.BirthDate.ToString("yyyy-MM-dd")</td>
+                        <td class="px-4 py-3 text-right">
+                            <button class="text-blue-600 hover:text-blue-800 font-medium mr-2 underline" @onclick="() => OpenEditModal(person)">Edit</button>
+                            <button class="text-red-600 hover:text-red-800 font-medium underline" @onclick="() => DeletePerson(person.Id)">Delete</button>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
 }
 
 @if (IsModalOpen)
 {
-    <div class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
-        <div class="bg-white p-4 rounded shadow w-full max-w-md">
-            <h2 class="text-xl font-bold mb-2">@(_editingPerson.Id == 0 ? "Add" : "Edit") Person</h2>
-            <EditForm Model="_editingPerson" OnValidSubmit="SavePerson">
-                <DataAnnotationsValidator />
-                <ValidationSummary />
-                <div class="mb-2">
-                    <label class="block text-sm font-medium">Name</label>
-                    <InputText class="border rounded w-full" @bind-Value="_editingPerson.Name" />
-                </div>
-                <div class="mb-2">
-                    <label class="block text-sm font-medium">Birth Date</label>
-                    <InputDate @bind-Value="_editingPerson.BirthDate" class="border rounded w-full" />
-                </div>
-                <div class="flex justify-end space-x-2">
-                    <button type="submit" class="px-4 py-2 bg-blue-600 text-white rounded">Save</button>
-                    <button type="button" class="px-4 py-2 bg-gray-300 rounded" @onclick="CloseModal">Cancel</button>
-                </div>
-            </EditForm>
+    <div class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+        <div class="bg-white rounded-lg shadow-lg w-full max-w-md border border-blue-200">
+            <div class="flex items-center justify-between px-4 py-3 border-b border-blue-100 bg-blue-50 rounded-t-lg">
+                <h2 class="text-xl font-bold text-blue-900">@(_editingPerson.Id == 0 ? "Add" : "Edit") Person</h2>
+                <button class="text-gray-400 hover:text-gray-700 text-lg font-bold" @onclick="CloseModal">×</button>
+            </div>
+            <div class="p-4">
+                <EditForm Model="_editingPerson" OnValidSubmit="SavePerson">
+                    <DataAnnotationsValidator />
+                    <ValidationSummary />
+                    <div class="mb-4">
+                        <label class="block text-sm font-medium mb-1">Name</label>
+                        <InputText class="border border-gray-300 rounded w-full px-2 py-1" @bind-Value="_editingPerson.Name" />
+                    </div>
+                    <div class="mb-4">
+                        <label class="block text-sm font-medium mb-1">Birth Date</label>
+                        <InputDate @bind-Value="_editingPerson.BirthDate" class="border border-gray-300 rounded w-full px-2 py-1" />
+                    </div>
+                    <div class="flex justify-end space-x-2 mt-4">
+                        <button type="submit" class="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded shadow transition">Save</button>
+                        <button type="button" class="px-4 py-2 bg-gray-200 hover:bg-gray-300 rounded" @onclick="CloseModal">Cancel</button>
+                    </div>
+                </EditForm>
+            </div>
         </div>
     </div>
 }
@@ -70,6 +100,7 @@ else
     private List<Person>? _people;
     private Person _editingPerson = new();
     private bool IsModalOpen;
+    private bool _showHelp = false;
 
     protected override async Task OnInitializedAsync()
     {
@@ -122,5 +153,11 @@ else
     private void CloseModal()
     {
         IsModalOpen = false;
+    }
+
+    private void ToggleHelp()
+    {
+        _showHelp = !_showHelp;
+        StateHasChanged(); // Ensure UI updates after toggling help
     }
 }

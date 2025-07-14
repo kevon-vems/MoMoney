@@ -3,6 +3,33 @@
 @using RetirementPlanner.Services
 @inject IExpenseService ExpenseService
 
+<div class="mb-6 p-4 bg-gray-100 rounded">
+    <h2 class="text-xl font-semibold mb-2">About Expenses</h2>
+    <p class="mb-2 text-gray-700">
+        The Expenses section allows you to track and manage your annual spending categories. Each expense entry represents a recurring or one-time cost, such as housing, healthcare, or entertainment, that impacts your financial plan.
+    </p>
+    <ul class="list-disc pl-6 mb-2 text-gray-800">
+        <li><strong>Category:</strong> The name/type of the expense (e.g., "Rent", "Groceries", "Insurance").</li>
+        <li><strong>Annual Amount:</strong> The yearly cost of the expense.</li>
+        <li><strong>Is Healthcare:</strong> Marks if the expense is healthcare-related.</li>
+        <li><strong>Start Year:</strong> The year the expense begins.</li>
+        <li><strong>End Year:</strong> (Optional) The year the expense ends.</li>
+        <li><strong>Notes:</strong> Any additional information about the expense.</li>
+    </ul>
+    <h3 class="text-lg font-medium mb-1">How to Configure Expenses</h3>
+    <ol class="list-decimal pl-6 mb-2 text-gray-700">
+        <li>Click the <strong>Add Expense</strong> button. Fill in the category, annual amount, and other details.</li>
+        <li>If the expense is healthcare-related, check the box (if available).</li>
+        <li>Specify the start and end years if the expense is not ongoing.</li>
+        <li>Add notes for clarification.</li>
+        <li>Click <strong>Edit</strong> next to an expense to update its details.</li>
+        <li>Click <strong>Delete</strong> to remove an expense.</li>
+    </ol>
+    <p class="text-gray-600">
+        Accurately listing your expenses helps the application simulate your financial future, calculate budgets, and plan for savings or investments. Update your expenses regularly to reflect changes in your lifestyle or financial obligations.
+    </p>
+</div>
+
 <h1 class="text-2xl font-bold mb-4">Expenses</h1>
 <button class="px-4 py-2 mb-2 bg-blue-600 text-white rounded" @onclick="OpenAddModal">Add Expense</button>
 
