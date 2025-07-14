@@ -52,11 +52,11 @@ else
                 <DataAnnotationsValidator />
                 <ValidationSummary />
                 <div class="mb-2">
-                    <label class="block text-sm font-medium">Name</label>
-                    <InputText class="border rounded w-full" @bind-Value="_editingInvestment.Name" />
+                    <label class="form-label">Name <span class="info-icon" title="Investment name">ⓘ</span></label>
+                    <InputText class="form-input" @bind-Value="_editingInvestment.Name" />
                 </div>
                 <div class="mb-2">
-                    <label class="block text-sm font-medium">Type</label>
+                    <label class="form-label">Type <span class="info-icon" title="Investment type">ⓘ</span></label>
                     <InputSelect class="border rounded w-full" @bind-Value="_editingInvestment.InvestmentType">
                         @foreach (var val in Enum.GetValues<InvestmentType>())
                         {
@@ -65,28 +65,40 @@ else
                     </InputSelect>
                 </div>
                 <div class="mb-2">
-                    <label class="block text-sm font-medium">Current Balance</label>
-                    <InputNumber class="border rounded w-full" @bind-Value="_editingInvestment.CurrentBalance" />
+                    <label class="form-label">Current Balance <span class="info-icon" title="Current balance">ⓘ</span></label>
+                    <div class="currency-wrapper">
+                        <InputNumber class="form-input" @bind-Value="_editingInvestment.CurrentBalance" />
+                    </div>
                 </div>
                 <div class="mb-2">
-                    <label class="block text-sm font-medium">Expected Dividend Yield</label>
-                    <InputNumber class="border rounded w-full" @bind-Value="_editingInvestment.ExpectedDividendYield" />
+                    <label class="form-label">Expected Dividend Yield <span class="info-icon" title="Dividend yield percent">ⓘ</span></label>
+                    <div class="percentage-wrapper">
+                        <InputNumber class="form-input" @bind-Value="_editingInvestment.ExpectedDividendYield" />
+                    </div>
                 </div>
                 <div class="mb-2">
-                    <label class="block text-sm font-medium">Expected Growth Rate</label>
-                    <InputNumber class="border rounded w-full" @bind-Value="_editingInvestment.ExpectedGrowthRate" />
+                    <label class="form-label">Expected Growth Rate <span class="info-icon" title="Growth rate percent">ⓘ</span></label>
+                    <div class="percentage-wrapper">
+                        <InputNumber class="form-input" @bind-Value="_editingInvestment.ExpectedGrowthRate" />
+                    </div>
                 </div>
                 <div class="mb-2">
-                    <label class="block text-sm font-medium">Return of Capital Rate</label>
-                    <InputNumber class="border rounded w-full" @bind-Value="_editingInvestment.ExpectedReturnOfCapitalRate" />
+                    <label class="form-label">Return of Capital Rate <span class="info-icon" title="Return of capital percent">ⓘ</span></label>
+                    <div class="percentage-wrapper">
+                        <InputNumber class="form-input" @bind-Value="_editingInvestment.ExpectedReturnOfCapitalRate" />
+                    </div>
                 </div>
                 <div class="mb-2">
-                    <label class="block text-sm font-medium">Expense Ratio</label>
-                    <InputNumber class="border rounded w-full" @bind-Value="_editingInvestment.ExpenseRatio" />
+                    <label class="form-label">Expense Ratio <span class="info-icon" title="Expense ratio percent">ⓘ</span></label>
+                    <div class="percentage-wrapper">
+                        <InputNumber class="form-input" @bind-Value="_editingInvestment.ExpenseRatio" />
+                    </div>
                 </div>
                 <div class="mb-2">
-                    <label class="block text-sm font-medium">Turnover Rate</label>
-                    <InputNumber class="border rounded w-full" @bind-Value="_editingInvestment.ExpectedTurnoverRate" />
+                    <label class="form-label">Turnover Rate <span class="info-icon" title="Turnover rate percent">ⓘ</span></label>
+                    <div class="percentage-wrapper">
+                        <InputNumber class="form-input" @bind-Value="_editingInvestment.ExpectedTurnoverRate" />
+                    </div>
                 </div>
                 <div class="mb-2">
                     <label class="inline-flex items-center">
@@ -101,8 +113,8 @@ else
                     </label>
                 </div>
                 <div class="mb-2">
-                    <label class="block text-sm font-medium">Withdrawal Priority</label>
-                    <InputNumber class="border rounded w-full" @bind-Value="_editingInvestment.WithdrawalPriority" />
+                    <label class="form-label">Withdrawal Priority <span class="info-icon" title="Priority for withdrawals">ⓘ</span></label>
+                    <InputNumber class="form-input" @bind-Value="_editingInvestment.WithdrawalPriority" />
                 </div>
                 <div class="mb-2">
                     <label class="inline-flex items-center">
@@ -110,13 +122,16 @@ else
                         <span>Requires RMD</span>
                     </label>
                 </div>
+                @if (ShowRmdStartAge)
+                {
+                    <div class="mb-2">
+                        <label class="form-label">RMD Start Age <span class="info-icon" title="Age RMDs begin">ⓘ</span></label>
+                        <InputNumber class="form-input" @bind-Value="_editingInvestment.RMDStartAge" />
+                    </div>
+                }
                 <div class="mb-2">
-                    <label class="block text-sm font-medium">RMD Start Age</label>
-                    <InputNumber class="border rounded w-full" @bind-Value="_editingInvestment.RMDStartAge" />
-                </div>
-                <div class="mb-2">
-                    <label class="block text-sm font-medium">Person Id</label>
-                    <InputNumber class="border rounded w-full" @bind-Value="_editingInvestment.PersonId" />
+                    <label class="form-label">Person Id <span class="info-icon" title="Owner">ⓘ</span></label>
+                    <InputNumber class="form-input" @bind-Value="_editingInvestment.PersonId" />
                 </div>
                 <div class="flex justify-end space-x-2">
                     <button type="submit" class="px-4 py-2 bg-blue-600 text-white rounded">Save</button>
@@ -131,6 +146,11 @@ else
     private List<Investment>? _investments;
     private Investment _editingInvestment = new();
     private bool IsModalOpen;
+    private bool ShowRmdStartAge =>
+        _editingInvestment.RequiresRMD && InvestmentTypeRequiresRmd(_editingInvestment.InvestmentType);
+
+    private static bool InvestmentTypeRequiresRmd(InvestmentType type) =>
+        type is InvestmentType.TraditionalIRA or InvestmentType.Employer401k;
 
     protected override async Task OnInitializedAsync()
     {
@@ -173,6 +193,10 @@ else
 
     private async Task SaveInvestment()
     {
+        if (!ShowRmdStartAge)
+        {
+            _editingInvestment.RMDStartAge = null;
+        }
         if (_editingInvestment.Id == 0)
         {
             await InvestmentService.AddAsync(_editingInvestment);
