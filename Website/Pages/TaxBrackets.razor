@@ -2,6 +2,7 @@
 @using RetirementPlanner.Models
 @using RetirementPlanner.Services
 @inject ITaxBracketService TaxBracketService
+@inject IScenarioService ScenarioService
 
 <h1 class="text-2xl font-bold mb-4">Tax Brackets</h1>
 <button class="px-4 py-2 mb-2 bg-blue-600 text-white rounded" @onclick="OpenAddModal">Add Tax Bracket</button>
@@ -109,11 +110,13 @@ else
 
 @code {
     private List<TaxBracket>? _brackets;
+    private List<Scenario>? _scenarios;
     private TaxBracket _editingBracket = new();
     private bool IsModalOpen;
 
     protected override async Task OnInitializedAsync()
     {
+        await LoadScenarios();
         await LoadBrackets();
     }
 
@@ -122,9 +125,17 @@ else
         _brackets = await TaxBracketService.GetAllAsync();
     }
 
+    private async Task LoadScenarios()
+    {
+        _scenarios = await ScenarioService.GetAllAsync();
+    }
+
     private void OpenAddModal()
     {
-        _editingBracket = new TaxBracket();
+        _editingBracket = new TaxBracket
+        {
+            ScenarioId = _scenarios?.FirstOrDefault()?.Id ?? 0
+        };
         IsModalOpen = true;
     }
 
@@ -139,7 +150,8 @@ else
             MaxIncome = bracket.MaxIncome,
             Rate = bracket.Rate,
             Threshold = bracket.Threshold,
-            State = bracket.State
+            State = bracket.State,
+            ScenarioId = bracket.ScenarioId
         };
         IsModalOpen = true;
     }

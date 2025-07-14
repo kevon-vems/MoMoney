@@ -3,6 +3,7 @@
 @using RetirementPlanner.Services
 @inject IIncomeService IncomeService
 @inject IPersonService PersonService
+@inject IScenarioService ScenarioService
 
 <h1 class="text-2xl font-bold mb-4">Incomes</h1>
 <button class="px-4 py-2 mb-2 bg-blue-600 text-white rounded" @onclick="OpenAddModal">Add Income</button>
@@ -104,11 +105,13 @@ else
 @code {
     private List<Income>? _incomes;
     private List<Person>? _people;
+    private List<Scenario>? _scenarios;
     private Income _editingIncome = new();
     private bool IsModalOpen;
 
     protected override async Task OnInitializedAsync()
     {
+        await LoadScenarios();
         await LoadPeople();
         await LoadIncomes();
     }
@@ -116,6 +119,11 @@ else
     private async Task LoadIncomes()
     {
         _incomes = await IncomeService.GetAllAsync();
+    }
+
+    private async Task LoadScenarios()
+    {
+        _scenarios = await ScenarioService.GetAllAsync();
     }
 
     private async Task LoadPeople()
@@ -128,7 +136,8 @@ else
         _editingIncome = new Income
         {
             StartYear = DateTime.Now.Year,
-            PersonId = _people?.FirstOrDefault()?.Id
+            PersonId = _people?.FirstOrDefault()?.Id,
+            ScenarioId = _scenarios?.FirstOrDefault()?.Id ?? 0
         };
         IsModalOpen = true;
     }
@@ -144,7 +153,8 @@ else
             IsTaxExempt = income.IsTaxExempt,
             StartYear = income.StartYear,
             EndYear = income.EndYear,
-            PersonId = income.PersonId
+            PersonId = income.PersonId,
+            ScenarioId = income.ScenarioId
         };
         IsModalOpen = true;
     }

@@ -12,6 +12,7 @@ public class RetirementPlannerContext : DbContext
     }
 
     public DbSet<Person> People => Set<Person>();
+    public DbSet<Scenario> Scenarios => Set<Scenario>();
     public DbSet<Investment> Investments => Set<Investment>();
     public DbSet<InvestmentDistributionConfig> InvestmentDistributionConfigs => Set<InvestmentDistributionConfig>();
     public DbSet<Income> Incomes => Set<Income>();
@@ -45,6 +46,10 @@ public class RetirementPlannerContext : DbContext
         modelBuilder.Entity<Person>()
             .Property(p => p.BirthDate)
             .HasColumnType("date");
+
+        modelBuilder.Entity<Scenario>()
+            .Property(s => s.FilingStatus)
+            .HasConversion<string>();
 
         modelBuilder.Entity<Investment>()
             .Property(i => i.InvestmentType)

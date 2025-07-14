@@ -8,6 +8,10 @@ public class InvestmentRollover
     [Key]
     public int Id { get; set; }
 
+    [ForeignKey("Scenario")]
+    public int ScenarioId { get; set; }
+    public Scenario Scenario { get; set; } = null!;
+
     [ForeignKey("SourceInvestment")]
     public int SourceInvestmentId { get; set; }
     public Investment SourceInvestment { get; set; } = null!;

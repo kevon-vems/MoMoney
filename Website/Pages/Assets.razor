@@ -2,6 +2,7 @@
 @using RetirementPlanner.Models
 @using RetirementPlanner.Services
 @inject IAssetService AssetService
+@inject IScenarioService ScenarioService
 
 <h1 class="text-2xl font-bold mb-4">Assets</h1>
 <button class="px-4 py-2 mb-2 bg-blue-600 text-white rounded" @onclick="OpenAddModal">Add Asset</button>
@@ -93,11 +94,13 @@ else
 
 @code {
     private List<Asset>? _assets;
+    private List<Scenario>? _scenarios;
     private Asset _editingAsset = new();
     private bool IsModalOpen;
 
     protected override async Task OnInitializedAsync()
     {
+        await LoadScenarios();
         await LoadAssets();
     }
 
@@ -106,9 +109,17 @@ else
         _assets = await AssetService.GetAllAsync();
     }
 
+    private async Task LoadScenarios()
+    {
+        _scenarios = await ScenarioService.GetAllAsync();
+    }
+
     private void OpenAddModal()
     {
-        _editingAsset = new Asset();
+        _editingAsset = new Asset
+        {
+            ScenarioId = _scenarios?.FirstOrDefault()?.Id ?? 0
+        };
         IsModalOpen = true;
     }
 
@@ -123,6 +134,7 @@ else
             IsPrimaryResidence = asset.IsPrimaryResidence,
             IsDepreciable = asset.IsDepreciable,
             AppreciationRate = asset.AppreciationRate
+            ,ScenarioId = asset.ScenarioId
         };
         IsModalOpen = true;
     }

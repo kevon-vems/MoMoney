@@ -3,6 +3,7 @@
 @using RetirementPlanner.Services
 @inject ISurplusAllocationService SurplusAllocationService
 @inject IInvestmentService InvestmentService
+@inject IScenarioService ScenarioService
 
 <h1 class="text-2xl font-bold mb-4">Surplus Allocations</h1>
 
@@ -83,11 +84,13 @@ else
 @code {
     private List<SurplusAllocationConfig>? _allocations;
     private List<Investment>? _investments;
+    private List<Scenario>? _scenarios;
     private SurplusAllocationConfig _editingAllocation = new();
     private bool IsModalOpen;
 
     protected override async Task OnInitializedAsync()
     {
+        await LoadScenarios();
         await LoadInvestments();
         await LoadAllocations();
     }
@@ -102,11 +105,17 @@ else
         _investments = await InvestmentService.GetAllAsync();
     }
 
+    private async Task LoadScenarios()
+    {
+        _scenarios = await ScenarioService.GetAllAsync();
+    }
+
     private void OpenAddModal()
     {
         _editingAllocation = new SurplusAllocationConfig
         {
-            InvestmentId = _investments?.FirstOrDefault()?.Id ?? 0
+            InvestmentId = _investments?.FirstOrDefault()?.Id ?? 0,
+            ScenarioId = _scenarios?.FirstOrDefault()?.Id ?? 0
         };
         IsModalOpen = true;
     }
@@ -117,7 +126,8 @@ else
         {
             Id = alloc.Id,
             InvestmentId = alloc.InvestmentId,
-            AllocationPercentage = alloc.AllocationPercentage
+            AllocationPercentage = alloc.AllocationPercentage,
+            ScenarioId = alloc.ScenarioId
         };
         IsModalOpen = true;
     }

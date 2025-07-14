@@ -8,6 +8,10 @@ public class TaxBracket
     [Key]
     public int Id { get; set; }
 
+    [ForeignKey("Scenario")]
+    public int ScenarioId { get; set; }
+    public Scenario Scenario { get; set; } = null!;
+
     [Required]
     public TaxType TaxType { get; set; }
 

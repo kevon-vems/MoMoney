@@ -20,6 +20,7 @@ builder.Services.AddScoped<IAssetService, AssetService>();
 builder.Services.AddScoped<ITaxBracketService, TaxBracketService>();
 builder.Services.AddScoped<IInvestmentRolloverService, InvestmentRolloverService>();
 builder.Services.AddScoped<ISurplusAllocationService, SurplusAllocationService>();
+builder.Services.AddScoped<IScenarioService, ScenarioService>();
 
 var app = builder.Build();
 
