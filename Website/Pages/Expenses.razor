@@ -83,6 +83,24 @@ else
                     <label class="block text-sm font-medium">Amount</label>
                     <InputNumber class="border rounded w-full" @bind-Value="_editingExpense.AnnualAmount" />
                 </div>
+                <div class="mb-2">
+                    <label class="inline-flex items-center">
+                        <InputCheckbox class="mr-2" @bind-Value="_editingExpense.IsHealthcare" />
+                        <span>Is Healthcare</span>
+                    </label>
+                </div>
+                <div class="mb-2">
+                    <label class="block text-sm font-medium">Start Year</label>
+                    <InputNumber class="border rounded w-full" @bind-Value="_editingExpense.StartYear" />
+                </div>
+                <div class="mb-2">
+                    <label class="block text-sm font-medium">End Year</label>
+                    <InputNumber class="border rounded w-full" @bind-Value="_editingExpense.EndYear" />
+                </div>
+                <div class="mb-2">
+                    <label class="block text-sm font-medium">Notes</label>
+                    <InputText class="border rounded w-full" @bind-Value="_editingExpense.Notes" />
+                </div>
                 <div class="flex justify-end space-x-2">
                     <button type="submit" class="px-4 py-2 bg-blue-600 text-white rounded">Save</button>
                     <button type="button" class="px-4 py-2 bg-gray-300 rounded" @onclick="CloseModal">Cancel</button>
@@ -109,7 +127,7 @@ else
 
     private void OpenAddModal()
     {
-        _editingExpense = new Expense();
+        _editingExpense = new Expense { StartYear = DateTime.Now.Year };
         IsModalOpen = true;
     }
 
@@ -119,7 +137,11 @@ else
         {
             Id = expense.Id,
             Category = expense.Category,
-            AnnualAmount = expense.AnnualAmount
+            AnnualAmount = expense.AnnualAmount,
+            IsHealthcare = expense.IsHealthcare,
+            StartYear = expense.StartYear,
+            EndYear = expense.EndYear,
+            Notes = expense.Notes
         };
         IsModalOpen = true;
     }

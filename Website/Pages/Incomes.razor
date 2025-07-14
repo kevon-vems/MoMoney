@@ -53,8 +53,35 @@ else
                     <InputText class="border rounded w-full" @bind-Value="_editingIncome.Source" />
                 </div>
                 <div class="mb-2">
+                    <label class="block text-sm font-medium">Type</label>
+                    <InputSelect class="border rounded w-full" @bind-Value="_editingIncome.IncomeType">
+                        @foreach (var val in Enum.GetValues<IncomeType>())
+                        {
+                            <option value="@val">@val</option>
+                        }
+                    </InputSelect>
+                </div>
+                <div class="mb-2">
                     <label class="block text-sm font-medium">Amount</label>
                     <InputNumber class="border rounded w-full" @bind-Value="_editingIncome.AnnualAmount" />
+                </div>
+                <div class="mb-2">
+                    <label class="inline-flex items-center">
+                        <InputCheckbox class="mr-2" @bind-Value="_editingIncome.IsTaxExempt" />
+                        <span>Is Tax Exempt</span>
+                    </label>
+                </div>
+                <div class="mb-2">
+                    <label class="block text-sm font-medium">Start Year</label>
+                    <InputNumber class="border rounded w-full" @bind-Value="_editingIncome.StartYear" />
+                </div>
+                <div class="mb-2">
+                    <label class="block text-sm font-medium">End Year</label>
+                    <InputNumber class="border rounded w-full" @bind-Value="_editingIncome.EndYear" />
+                </div>
+                <div class="mb-2">
+                    <label class="block text-sm font-medium">Person Id</label>
+                    <InputNumber class="border rounded w-full" @bind-Value="_editingIncome.PersonId" />
                 </div>
                 <div class="flex justify-end space-x-2">
                     <button type="submit" class="px-4 py-2 bg-blue-600 text-white rounded">Save</button>
@@ -82,7 +109,7 @@ else
 
     private void OpenAddModal()
     {
-        _editingIncome = new Income();
+        _editingIncome = new Income { StartYear = DateTime.Now.Year };
         IsModalOpen = true;
     }
 
@@ -92,7 +119,12 @@ else
         {
             Id = income.Id,
             Source = income.Source,
-            AnnualAmount = income.AnnualAmount
+            IncomeType = income.IncomeType,
+            AnnualAmount = income.AnnualAmount,
+            IsTaxExempt = income.IsTaxExempt,
+            StartYear = income.StartYear,
+            EndYear = income.EndYear,
+            PersonId = income.PersonId
         };
         IsModalOpen = true;
     }

@@ -66,6 +66,15 @@ else
                     <label class="block text-sm font-medium">Year</label>
                     <InputNumber class="border rounded w-full" @bind-Value="_editingRollover.Year" />
                 </div>
+                <div class="mb-2">
+                    <label class="block text-sm font-medium">Rollover Type</label>
+                    <InputSelect class="border rounded w-full" @bind-Value="_editingRollover.RolloverType">
+                        @foreach (var val in Enum.GetValues<RolloverType>())
+                        {
+                            <option value="@val">@val</option>
+                        }
+                    </InputSelect>
+                </div>
                 <div class="flex justify-end space-x-2">
                     <button type="submit" class="px-4 py-2 bg-blue-600 text-white rounded">Save</button>
                     <button type="button" class="px-4 py-2 bg-gray-300 rounded" @onclick="CloseModal">Cancel</button>

@@ -68,6 +68,56 @@ else
                     <label class="block text-sm font-medium">Current Balance</label>
                     <InputNumber class="border rounded w-full" @bind-Value="_editingInvestment.CurrentBalance" />
                 </div>
+                <div class="mb-2">
+                    <label class="block text-sm font-medium">Expected Dividend Yield</label>
+                    <InputNumber class="border rounded w-full" @bind-Value="_editingInvestment.ExpectedDividendYield" />
+                </div>
+                <div class="mb-2">
+                    <label class="block text-sm font-medium">Expected Growth Rate</label>
+                    <InputNumber class="border rounded w-full" @bind-Value="_editingInvestment.ExpectedGrowthRate" />
+                </div>
+                <div class="mb-2">
+                    <label class="block text-sm font-medium">Return of Capital Rate</label>
+                    <InputNumber class="border rounded w-full" @bind-Value="_editingInvestment.ExpectedReturnOfCapitalRate" />
+                </div>
+                <div class="mb-2">
+                    <label class="block text-sm font-medium">Expense Ratio</label>
+                    <InputNumber class="border rounded w-full" @bind-Value="_editingInvestment.ExpenseRatio" />
+                </div>
+                <div class="mb-2">
+                    <label class="block text-sm font-medium">Turnover Rate</label>
+                    <InputNumber class="border rounded w-full" @bind-Value="_editingInvestment.ExpectedTurnoverRate" />
+                </div>
+                <div class="mb-2">
+                    <label class="inline-flex items-center">
+                        <InputCheckbox class="mr-2" @bind-Value="_editingInvestment.IsFederalTaxExempt" />
+                        <span>Federal Tax Exempt</span>
+                    </label>
+                </div>
+                <div class="mb-2">
+                    <label class="inline-flex items-center">
+                        <InputCheckbox class="mr-2" @bind-Value="_editingInvestment.IsStateTaxExempt" />
+                        <span>State Tax Exempt</span>
+                    </label>
+                </div>
+                <div class="mb-2">
+                    <label class="block text-sm font-medium">Withdrawal Priority</label>
+                    <InputNumber class="border rounded w-full" @bind-Value="_editingInvestment.WithdrawalPriority" />
+                </div>
+                <div class="mb-2">
+                    <label class="inline-flex items-center">
+                        <InputCheckbox class="mr-2" @bind-Value="_editingInvestment.RequiresRMD" />
+                        <span>Requires RMD</span>
+                    </label>
+                </div>
+                <div class="mb-2">
+                    <label class="block text-sm font-medium">RMD Start Age</label>
+                    <InputNumber class="border rounded w-full" @bind-Value="_editingInvestment.RMDStartAge" />
+                </div>
+                <div class="mb-2">
+                    <label class="block text-sm font-medium">Person Id</label>
+                    <InputNumber class="border rounded w-full" @bind-Value="_editingInvestment.PersonId" />
+                </div>
                 <div class="flex justify-end space-x-2">
                     <button type="submit" class="px-4 py-2 bg-blue-600 text-white rounded">Save</button>
                     <button type="button" class="px-4 py-2 bg-gray-300 rounded" @onclick="CloseModal">Cancel</button>
@@ -105,7 +155,18 @@ else
             Id = investment.Id,
             Name = investment.Name,
             InvestmentType = investment.InvestmentType,
-            CurrentBalance = investment.CurrentBalance
+            CurrentBalance = investment.CurrentBalance,
+            ExpectedDividendYield = investment.ExpectedDividendYield,
+            ExpectedGrowthRate = investment.ExpectedGrowthRate,
+            ExpectedReturnOfCapitalRate = investment.ExpectedReturnOfCapitalRate,
+            ExpenseRatio = investment.ExpenseRatio,
+            ExpectedTurnoverRate = investment.ExpectedTurnoverRate,
+            IsFederalTaxExempt = investment.IsFederalTaxExempt,
+            IsStateTaxExempt = investment.IsStateTaxExempt,
+            WithdrawalPriority = investment.WithdrawalPriority,
+            RequiresRMD = investment.RequiresRMD,
+            RMDStartAge = investment.RMDStartAge,
+            PersonId = investment.PersonId
         };
         IsModalOpen = true;
     }
