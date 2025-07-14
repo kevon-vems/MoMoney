@@ -51,20 +51,22 @@ else
                 <DataAnnotationsValidator />
                 <ValidationSummary />
                 <div class="mb-2">
-                    <label class="block text-sm font-medium">Source Investment Id</label>
-                    <InputNumber class="border rounded w-full" @bind-Value="_editingRollover.SourceInvestmentId" />
+                    <label class="form-label">Source Investment Id <span class="info-icon" title="Source investment">ⓘ</span></label>
+                    <InputNumber class="form-input" @bind-Value="_editingRollover.SourceInvestmentId" />
                 </div>
                 <div class="mb-2">
-                    <label class="block text-sm font-medium">Destination Investment Id</label>
-                    <InputNumber class="border rounded w-full" @bind-Value="_editingRollover.DestinationInvestmentId" />
+                    <label class="form-label">Destination Investment Id <span class="info-icon" title="Destination investment">ⓘ</span></label>
+                    <InputNumber class="form-input" @bind-Value="_editingRollover.DestinationInvestmentId" />
                 </div>
                 <div class="mb-2">
-                    <label class="block text-sm font-medium">Amount</label>
-                    <InputNumber class="border rounded w-full" @bind-Value="_editingRollover.Amount" />
+                    <label class="form-label">Amount <span class="info-icon" title="Rollover amount">ⓘ</span></label>
+                    <div class="currency-wrapper">
+                        <InputNumber class="form-input" @bind-Value="_editingRollover.Amount" />
+                    </div>
                 </div>
                 <div class="mb-2">
-                    <label class="block text-sm font-medium">Year</label>
-                    <InputNumber class="border rounded w-full" @bind-Value="_editingRollover.Year" />
+                    <label class="form-label">Year <span class="info-icon" title="Year of rollover">ⓘ</span></label>
+                    <InputNumber class="form-input" @bind-Value="_editingRollover.Year" />
                 </div>
                 <div class="mb-2">
                     <label class="block text-sm font-medium">Rollover Type</label>
