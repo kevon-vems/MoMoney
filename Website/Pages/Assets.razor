@@ -56,6 +56,28 @@ else
                     <label class="block text-sm font-medium">Value</label>
                     <InputNumber class="border rounded w-full" @bind-Value="_editingAsset.Value" />
                 </div>
+                <div class="mb-2">
+                    <label class="inline-flex items-center">
+                        <InputCheckbox class="mr-2" @bind-Value="_editingAsset.IsLiquid" />
+                        <span>Is Liquid</span>
+                    </label>
+                </div>
+                <div class="mb-2">
+                    <label class="inline-flex items-center">
+                        <InputCheckbox class="mr-2" @bind-Value="_editingAsset.IsPrimaryResidence" />
+                        <span>Is Primary Residence</span>
+                    </label>
+                </div>
+                <div class="mb-2">
+                    <label class="inline-flex items-center">
+                        <InputCheckbox class="mr-2" @bind-Value="_editingAsset.IsDepreciable" />
+                        <span>Is Depreciable</span>
+                    </label>
+                </div>
+                <div class="mb-2">
+                    <label class="block text-sm font-medium">Appreciation Rate</label>
+                    <InputNumber class="border rounded w-full" @bind-Value="_editingAsset.AppreciationRate" />
+                </div>
                 <div class="flex justify-end space-x-2">
                     <button type="submit" class="px-4 py-2 bg-blue-600 text-white rounded">Save</button>
                     <button type="button" class="px-4 py-2 bg-gray-300 rounded" @onclick="CloseModal">Cancel</button>
@@ -92,7 +114,11 @@ else
         {
             Id = asset.Id,
             Name = asset.Name,
-            Value = asset.Value
+            Value = asset.Value,
+            IsLiquid = asset.IsLiquid,
+            IsPrimaryResidence = asset.IsPrimaryResidence,
+            IsDepreciable = asset.IsDepreciable,
+            AppreciationRate = asset.AppreciationRate
         };
         IsModalOpen = true;
     }

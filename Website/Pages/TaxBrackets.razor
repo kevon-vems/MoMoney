@@ -62,6 +62,15 @@ else
                     </InputSelect>
                 </div>
                 <div class="mb-2">
+                    <label class="block text-sm font-medium">Filing Status</label>
+                    <InputSelect class="border rounded w-full" @bind-Value="_editingBracket.FilingStatus">
+                        @foreach (var val in Enum.GetValues<FilingStatus>())
+                        {
+                            <option value="@val">@val</option>
+                        }
+                    </InputSelect>
+                </div>
+                <div class="mb-2">
                     <label class="block text-sm font-medium">Min Income</label>
                     <InputNumber class="border rounded w-full" @bind-Value="_editingBracket.MinIncome" />
                 </div>
@@ -72,6 +81,14 @@ else
                 <div class="mb-2">
                     <label class="block text-sm font-medium">Rate</label>
                     <InputNumber class="border rounded w-full" @bind-Value="_editingBracket.Rate" />
+                </div>
+                <div class="mb-2">
+                    <label class="block text-sm font-medium">Threshold</label>
+                    <InputNumber class="border rounded w-full" @bind-Value="_editingBracket.Threshold" />
+                </div>
+                <div class="mb-2">
+                    <label class="block text-sm font-medium">State</label>
+                    <InputText class="border rounded w-full" @bind-Value="_editingBracket.State" />
                 </div>
                 <div class="flex justify-end space-x-2">
                     <button type="submit" class="px-4 py-2 bg-blue-600 text-white rounded">Save</button>
@@ -109,9 +126,12 @@ else
         {
             Id = bracket.Id,
             TaxType = bracket.TaxType,
+            FilingStatus = bracket.FilingStatus,
             MinIncome = bracket.MinIncome,
             MaxIncome = bracket.MaxIncome,
-            Rate = bracket.Rate
+            Rate = bracket.Rate,
+            Threshold = bracket.Threshold,
+            State = bracket.State
         };
         IsModalOpen = true;
     }
