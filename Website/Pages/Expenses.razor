@@ -69,18 +69,18 @@ else
 
 @if (IsModalOpen)
 {
-    <div class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
+    <div class="fixed inset-0 backdrop-blur-sm bg-white/50 flex items-center justify-center">
         <div class="bg-white p-4 rounded shadow w-full max-w-md">
             <h2 class="text-xl font-bold mb-2">@(_editingExpense.Id == 0 ? "Add" : "Edit") Expense</h2>
             <EditForm Model="_editingExpense" OnValidSubmit="SaveExpense">
                 <DataAnnotationsValidator />
                 <ValidationSummary />
                 <div class="mb-2">
-                    <label class="form-label">Category <span class="info-icon" title="Expense category">ⓘ</span></label>
+                    <label class="form-label"><span class="info-icon" title="Expense category">ⓘ</span> Category</label>
                     <InputText class="form-input" @bind-Value="_editingExpense.Category" />
                 </div>
                 <div class="mb-2">
-                    <label class="form-label">Amount <span class="info-icon" title="Annual expense amount">ⓘ</span></label>
+                    <label class="form-label"><span class="info-icon" title="Annual expense amount">ⓘ</span> Amount</label>
                     <div class="currency-wrapper">
                         <InputNumber class="form-input" @bind-Value="_editingExpense.AnnualAmount" />
                     </div>
@@ -92,15 +92,15 @@ else
                     </label>
                 </div>
                 <div class="mb-2">
-                    <label class="form-label">Start Year <span class="info-icon" title="Year the expense begins">ⓘ</span></label>
+                    <label class="form-label"><span class="info-icon" title="Year the expense begins">ⓘ</span> Start Year</label>
                     <InputNumber class="form-input" @bind-Value="_editingExpense.StartYear" />
                 </div>
                 <div class="mb-2">
-                    <label class="form-label">End Year <span class="info-icon" title="Year the expense ends">ⓘ</span></label>
+                    <label class="form-label"><span class="info-icon" title="Year the expense ends">ⓘ</span> End Year</label>
                     <InputNumber class="form-input" @bind-Value="_editingExpense.EndYear" />
                 </div>
                 <div class="mb-2">
-                    <label class="form-label">Notes <span class="info-icon" title="Additional notes">ⓘ</span></label>
+                    <label class="form-label"><span class="info-icon" title="Additional notes">ⓘ</span> Notes</label>
                     <InputText class="form-input" @bind-Value="_editingExpense.Notes" />
                 </div>
                 <div class="flex justify-end space-x-2">

@@ -45,19 +45,19 @@ else
 
 @if (IsModalOpen)
 {
-    <div class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
+    <div class="fixed inset-0 backdrop-blur-sm bg-white/50 flex items-center justify-center">
         <div class="bg-white p-4 rounded shadow w-full max-w-md">
             <h2 class="text-xl font-bold mb-2">@(_editingInvestment.Id == 0 ? "Add" : "Edit") Investment</h2>
             <EditForm Model="_editingInvestment" OnValidSubmit="SaveInvestment">
                 <DataAnnotationsValidator />
                 <ValidationSummary />
                 <div class="mb-2">
-                    <label class="form-label">Name <span class="info-icon" title="Investment name">ⓘ</span></label>
+                    <label class="form-label"><span class="info-icon" title="This is the field we use for display within lists, it is a user friendly name to identify the investment.">ⓘ</span> Name</label>
                     <InputText class="form-input" @bind-Value="_editingInvestment.Name" />
                 </div>
                 <div class="mb-2">
-                    <label class="form-label">Type <span class="info-icon" title="Investment type">ⓘ</span></label>
-                    <InputSelect class="border rounded w-full" @bind-Value="_editingInvestment.InvestmentType">
+                    <label class="form-label"><span class="info-icon" title="Investment type">ⓘ</span> Type</label>
+                    <InputSelect class="form-input" @bind-Value="_editingInvestment.InvestmentType">
                         @foreach (var val in Enum.GetValues<InvestmentType>())
                         {
                             <option value="@val">@val</option>
@@ -65,37 +65,37 @@ else
                     </InputSelect>
                 </div>
                 <div class="mb-2">
-                    <label class="form-label">Current Balance <span class="info-icon" title="Current balance">ⓘ</span></label>
+                    <label class="form-label"><span class="info-icon" title="Current balance">ⓘ</span> Current Balance</label>
                     <div class="currency-wrapper">
                         <InputNumber class="form-input" @bind-Value="_editingInvestment.CurrentBalance" />
                     </div>
                 </div>
                 <div class="mb-2">
-                    <label class="form-label">Expected Dividend Yield <span class="info-icon" title="Dividend yield percent">ⓘ</span></label>
+                    <label class="form-label"><span class="info-icon" title="Dividend yield percent">ⓘ</span> Expected Dividend Yield</label>
                     <div class="percentage-wrapper">
                         <InputNumber class="form-input" @bind-Value="_editingInvestment.ExpectedDividendYield" />
                     </div>
                 </div>
                 <div class="mb-2">
-                    <label class="form-label">Expected Growth Rate <span class="info-icon" title="Growth rate percent">ⓘ</span></label>
+                    <label class="form-label"><span class="info-icon" title="Growth rate percent">ⓘ</span> Expected Growth Rate</label>
                     <div class="percentage-wrapper">
                         <InputNumber class="form-input" @bind-Value="_editingInvestment.ExpectedGrowthRate" />
                     </div>
                 </div>
                 <div class="mb-2">
-                    <label class="form-label">Return of Capital Rate <span class="info-icon" title="Return of capital percent">ⓘ</span></label>
+                    <label class="form-label"><span class="info-icon" title="Return of capital percent">ⓘ</span> Return of Capital Rate</label>
                     <div class="percentage-wrapper">
                         <InputNumber class="form-input" @bind-Value="_editingInvestment.ExpectedReturnOfCapitalRate" />
                     </div>
                 </div>
                 <div class="mb-2">
-                    <label class="form-label">Expense Ratio <span class="info-icon" title="Expense ratio percent">ⓘ</span></label>
+                    <label class="form-label"><span class="info-icon" title="Expense ratio percent">ⓘ</span> Expense Ratio</label>
                     <div class="percentage-wrapper">
                         <InputNumber class="form-input" @bind-Value="_editingInvestment.ExpenseRatio" />
                     </div>
                 </div>
                 <div class="mb-2">
-                    <label class="form-label">Turnover Rate <span class="info-icon" title="Turnover rate percent">ⓘ</span></label>
+                    <label class="form-label"><span class="info-icon" title="This is the percentage of your portfolio which is expected to be sold in any given year. This is used to help calculate Capital Gains.">ⓘ</span> Turnover Rate</label>
                     <div class="percentage-wrapper">
                         <InputNumber class="form-input" @bind-Value="_editingInvestment.ExpectedTurnoverRate" />
                     </div>
@@ -113,7 +113,7 @@ else
                     </label>
                 </div>
                 <div class="mb-2">
-                    <label class="form-label">Withdrawal Priority <span class="info-icon" title="Priority for withdrawals">ⓘ</span></label>
+                    <label class="form-label"><span class="info-icon" title="Priority for withdrawals">ⓘ</span> Withdrawal Priority</label>
                     <InputNumber class="form-input" @bind-Value="_editingInvestment.WithdrawalPriority" />
                 </div>
                 <div class="mb-2">
@@ -125,12 +125,12 @@ else
                 @if (ShowRmdStartAge)
                 {
                     <div class="mb-2">
-                        <label class="form-label">RMD Start Age <span class="info-icon" title="Age RMDs begin">ⓘ</span></label>
+                        <label class="form-label"><span class="info-icon" title="Age RMDs begin">ⓘ</span> RMD Start Age</label>
                         <InputNumber class="form-input" @bind-Value="_editingInvestment.RMDStartAge" />
                     </div>
                 }
                 <div class="mb-2">
-                    <label class="form-label">Person Id <span class="info-icon" title="Owner">ⓘ</span></label>
+                    <label class="form-label"><span class="info-icon" title="Owner">ⓘ</span> Person Id</label>
                     <InputNumber class="form-input" @bind-Value="_editingInvestment.PersonId" />
                 </div>
                 <div class="flex justify-end space-x-2">
